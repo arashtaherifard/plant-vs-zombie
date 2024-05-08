@@ -1,24 +1,22 @@
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <iostream>
+#include"peaShooter.cpp"
 using namespace std;
 using namespace sf;
 
-class game{
+class Game{
 public:
 
-game(int width, int height);
+Game(int width, int height);
+~Game();
 void run();
 RenderWindow window;
 
 private:
-
-Vector2f pos;
+PS *peaShooter;
 Texture background;
 void update();
 void render();
-Event ev;
+bool isDraggimg;
+Event event;
 Sprite sprite;
 void handleEvents();
 void handleMousePress(Event ev);
