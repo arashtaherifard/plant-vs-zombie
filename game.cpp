@@ -17,6 +17,12 @@ void Game :: render()
 {
     window.clear();
     window.draw(sprite);
+    if(isDraggimg) {
+
+    mousePose = Vector2f(Mouse::getPosition(window));
+        peaShooter->sprite.setPosition(mousePose.x, mousePose.y);;
+    }
+
     peaShooter->render(window);
     window.display();  
 } 
@@ -24,13 +30,14 @@ void Game :: render()
 void Game :: checkMousePress()
 {
     mousePose = Vector2f(Mouse::getPosition(window));
-    if (event.mouseButton.button == Mouse::Right)
-    {
-        return;
-    }
-    if (peaShooter->sprite.getGlobalBounds().contains(mousePose))
+
+    if (event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left)
     {
         isDraggimg = true;
+    }
+    if (!peaShooter->sprite.getGlobalBounds().contains(mousePose.x, mousePose.y))
+    {
+        isDraggimg = false;
     }
     
     
@@ -70,13 +77,16 @@ void Game :: run()
 {
     while (window.isOpen())
     {
-        checkMousePress();
-        handleEvents();
+        
         while (window.pollEvent(event))
             {
+                if (event.type == Event :: MouseButtonPressed)
+                checkMousePress();
+                if(event.type == Event :: MouseButtonReleased)
+                handleMouseRelease();
                 if (event.type == Event::Closed)
                 window.close();
-            }
+            }handleEvents();
         render();
     }
     // update(); 
