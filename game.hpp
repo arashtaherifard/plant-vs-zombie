@@ -8,9 +8,12 @@ public:
 Game(int width, int height);
 ~Game();
 void run();
+void checkMousePress();
 RenderWindow window;
 
 private:
+// Music music;
+Vector2f mousePose; 
 PS *peaShooter;
 Texture background;
 void update();
@@ -19,6 +22,6 @@ bool isDraggimg;
 Event event;
 Sprite sprite;
 void handleEvents();
-void handleMousePress(Event ev);
-void handleMouseRelease(Event ev);
+void handleMousePress();
+void handleMouseRelease();
 }; 

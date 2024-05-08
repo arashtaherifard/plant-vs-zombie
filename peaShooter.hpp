@@ -9,9 +9,11 @@ public:
 PS(int x, int y);
 void update();
 void render(RenderWindow  &window);
-void handleMousePress(Event &ev);
-void handleMouseRelease(Event &ev);
-private:
+void handleMousePress(Vector2f mousePose);
+void handleMouseRelease(Vector2f mousePose);
 Sprite sprite;
 Texture image;
+private:
+
+
 };
