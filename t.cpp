@@ -1,33 +1,41 @@
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
+// #include <SFML/Audio.hpp>
+// #include <SFML/Graphics.hpp>
+// #include <SFML/System.hpp>
+#include"game.cpp"
+// #include<iostream>
 using namespace std;
 using namespace sf;
 
+bool checkPressed(Event e)
+{       
+    if (e.mouseButton.button == Mouse::Right)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool checkMousePose(RenderWindow &window, Sprite z, bool checkPress)
+{       
+    Vector2f mousePose = Vector2f(Mouse::getPosition(window));
+    if (z.getGlobalBounds().contains(mousePose.x, mousePose.y) && checkPress)
+    {
+        return true;
+    }
+    return false;
+}
+
+void drag(bool isDragging, Sprite &z, RenderWindow &window, Vector2f mousePose)
+{
+
+    if(isDragging)
+    {
+        z.setPosition(mousePose);
+    }
+}
+
 int main()
 {
-        RenderWindow window(VideoMode(1400,599,32), "Test 32");
-
-        Texture texture;
-        if(!texture.loadFromFile("167822.png"))
-        {
-            return EXIT_FAILURE;
-        }
-        Sprite sprite;
-        // Vector2u size = texture.getSize();
-        sprite.setTexture(texture);
-        // sprite.setOrigin(size.x/9 , size.y/9);
-
-        while (window.isOpen())
-        {
-                Event e;
-                while (window.pollEvent(e))
-                {
-                        if (e.type == Event::Closed)
-                                window.close();
-                }
-                window.clear();
-                window.draw(sprite);
-                window.display();
-        }
+   game zombieVsPlant(1400, 600);
+   zombieVsPlant.run();
 }
