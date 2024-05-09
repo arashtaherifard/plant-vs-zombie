@@ -7,7 +7,9 @@ public:
 Projectile(Vector2f pose);
 void render(RenderWindow  &window);
 void mover();
+
 private:
+
 Sprite sprite;
 Vector2f spritePose;
 Texture image;

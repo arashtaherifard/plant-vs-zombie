@@ -22,47 +22,30 @@ void Game :: render()
     window.display();  
 } 
 
-void Game :: checkMousePress()
-{
-    peaShooter->isDragging = false;
-    if (event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left)
-    {
-        peaShooter->isDragging  = true;
-    }
-    if (!peaShooter->sprite.getGlobalBounds().contains(mousePose.x, mousePose.y))
-    {
-        peaShooter->isDragging  = false;
-    }
-}
-
 void Game :: update()
 {
-    peaShooter->update(mousePose);
-}
-
-void Game :: handleMousePress()
-{
-    peaShooter->handleMousePress(mousePose);
-}
-
-void Game :: handleMouseRelease()
-{
-    peaShooter->handleMouseRelease(mousePose);
+    peaShooter -> update(mousePose);
 }
 
 void Game :: handleEvents()
 {
-    if (peaShooter->isDragging )
-    {
-        mousePose =Vector2f(Mouse::getPosition(window));
-        handleMousePress();
+    mousePose = Vector2f(Mouse::getPosition(window));
+    if (event.type == Event :: MouseButtonPressed)
+    { 
+        if (event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left)
+        {
+            peaShooter->isDragging = true ;
+        } 
+        if (!peaShooter->sprite.getGlobalBounds().contains(mousePose))
+        {
+            peaShooter->isDragging = false;
+        }
     }
-    else 
+    if(event.type == Event :: MouseButtonReleased)
     {
-        handleMouseRelease();
+        peaShooter->isDragging = false;
     }
 }
-    
 
 
 void Game :: run()
@@ -71,16 +54,12 @@ void Game :: run()
     {
         while (window.pollEvent(event))
             {
-                if (event.type == Event :: MouseButtonPressed)
-                checkMousePress();
-                if(event.type == Event :: MouseButtonReleased)
-                peaShooter->isDragging  = false;
-                if (event.type == Event::Closed)
-                window.close();
                 handleEvents();
+                if (event.type == Event::Closed)
+                window.close();    
             }
+    update();       
     render();
-    update(); 
     }
 }
 

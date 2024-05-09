@@ -7,15 +7,18 @@ Projectile :: Projectile(Vector2f pose)
     }
     sprite.setTexture(image);
     sprite.setScale(0.2,0.2);
-    
     spritePose = pose;
-   
 }
 
 void Projectile :: mover()
 {
     spritePose.x += 5 ; 
 }
+
+// void PS :: update(Vector2f pose)
+// {
+
+// }
 
 void Projectile :: render(RenderWindow  &window)
 {

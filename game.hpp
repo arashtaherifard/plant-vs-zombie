@@ -12,6 +12,7 @@ void checkMousePress();
 RenderWindow window;
 
 private:
+
 // Music music;
 Vector2f mousePose; 
 PS *peaShooter;
