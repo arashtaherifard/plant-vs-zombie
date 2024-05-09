@@ -3,94 +3,64 @@
 Game :: Game(int width, int height)
 {
     window.create(VideoMode(width, height), "background", Style::Close);
-    peaShooter = new PS(1,2);
     if(!background.loadFromFile("pictures/167822.png"))
     {
         return ;
     }
     sprite.setTexture(background);
+    window.setFramerateLimit(144);
+    peaShooter.push_back(new PS(1,2));
 }
 
-Game :: ~Game(){delete peaShooter;}
+Game :: ~Game(){delete peaShooter[0];}
 
 void Game :: render()
 {
     window.clear();
     window.draw(sprite);
-    if(isDraggimg) {
-
-    mousePose = Vector2f(Mouse::getPosition(window));
-        peaShooter->sprite.setPosition(mousePose.x, mousePose.y);;
-    }
-
-    peaShooter->render(window);
+    peaShooter[0]->render(window);
     window.display();  
 } 
 
-void Game :: checkMousePress()
-{
-    mousePose = Vector2f(Mouse::getPosition(window));
-
-    if (event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left)
-    {
-        isDraggimg = true;
-    }
-    if (!peaShooter->sprite.getGlobalBounds().contains(mousePose.x, mousePose.y))
-    {
-        isDraggimg = false;
-    }
-    
-    
-}
-
 void Game :: update()
 {
-
-}
-
-void Game :: handleMousePress()
-{
-    peaShooter->handleMousePress(mousePose);
-}
-
-void Game :: handleMouseRelease()
-{
-    isDraggimg = false;
+    peaShooter[0] -> update(mousePose);
 }
 
 void Game :: handleEvents()
 {
-    
-    if (isDraggimg)
-    {
-        handleMousePress();
+    mousePose = Vector2f(Mouse::getPosition(window));
+    if (event.type == Event :: MouseButtonPressed)
+    { 
+        if (event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left)
+        {
+            peaShooter[0]->isDragging = true ;
+        } 
+        if (!peaShooter[0]->sprite.getGlobalBounds().contains(mousePose))
+        {
+            peaShooter[0]->isDragging = false;
+        }
     }
-    else 
+    if(event.type == Event :: MouseButtonReleased)
     {
-        handleMouseRelease();
+        peaShooter[0]->isDragging = false;
     }
 }
-    
 
 
 void Game :: run()
 {
     while (window.isOpen())
     {
-        
         while (window.pollEvent(event))
             {
-                if (event.type == Event :: MouseButtonPressed)
-                checkMousePress();
-                if(event.type == Event :: MouseButtonReleased)
-                handleMouseRelease();
+                handleEvents();
                 if (event.type == Event::Closed)
-                window.close();
-            }handleEvents();
-        render();
+                window.close();    
+            }
+    update();       
+    render();
     }
-    // update(); 
-
 }
 
 

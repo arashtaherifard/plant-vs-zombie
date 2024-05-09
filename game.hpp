@@ -12,13 +12,13 @@ void checkMousePress();
 RenderWindow window;
 
 private:
+
 // Music music;
 Vector2f mousePose; 
-PS *peaShooter;
+vector<PS*> peaShooter;
 Texture background;
 void update();
 void render();
-bool isDraggimg;
 Event event;
 Sprite sprite;
 void handleEvents();
