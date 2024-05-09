@@ -1,5 +1,5 @@
 #include"projectile.hpp"
-Projectile :: Projectile(Vector2f pose)
+Projectile :: Projectile()
 {
     if (!image.loadFromFile("spriters/Peashooter/pea.png"))
     {
@@ -7,7 +7,6 @@ Projectile :: Projectile(Vector2f pose)
     }
     sprite.setTexture(image);
     sprite.setScale(0.2,0.2);
-    spritePose = pose;
 }
 
 void Projectile :: mover()
@@ -23,6 +22,6 @@ void Projectile :: mover()
 void Projectile :: render(RenderWindow  &window)
 {
     mover();
-    sprite.setPosition(spritePose);
+    sprite.setPosition(spritePose.x+5, spritePose.y-25);
     window.draw(sprite);
 }

@@ -3,28 +3,28 @@
 Game :: Game(int width, int height)
 {
     window.create(VideoMode(width, height), "background", Style::Close);
-    peaShooter = new PS(1,2);
     if(!background.loadFromFile("pictures/167822.png"))
     {
         return ;
     }
     sprite.setTexture(background);
     window.setFramerateLimit(144);
+    peaShooter.push_back(new PS(1,2));
 }
 
-Game :: ~Game(){delete peaShooter;}
+Game :: ~Game(){delete peaShooter[0];}
 
 void Game :: render()
 {
     window.clear();
     window.draw(sprite);
-    peaShooter->render(window);
+    peaShooter[0]->render(window);
     window.display();  
 } 
 
 void Game :: update()
 {
-    peaShooter -> update(mousePose);
+    peaShooter[0] -> update(mousePose);
 }
 
 void Game :: handleEvents()
@@ -34,16 +34,16 @@ void Game :: handleEvents()
     { 
         if (event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left)
         {
-            peaShooter->isDragging = true ;
+            peaShooter[0]->isDragging = true ;
         } 
-        if (!peaShooter->sprite.getGlobalBounds().contains(mousePose))
+        if (!peaShooter[0]->sprite.getGlobalBounds().contains(mousePose))
         {
-            peaShooter->isDragging = false;
+            peaShooter[0]->isDragging = false;
         }
     }
     if(event.type == Event :: MouseButtonReleased)
     {
-        peaShooter->isDragging = false;
+        peaShooter[0]->isDragging = false;
     }
 }
 

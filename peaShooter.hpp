@@ -11,7 +11,6 @@ void update(Vector2f pose);
 void render(RenderWindow  &window);
 void handleMousePress(Vector2f pose);
 void handleMouseRelease(Vector2f pose);
-void generateProjectile();
 bool isDragging;
 Sprite sprite;
 private:
