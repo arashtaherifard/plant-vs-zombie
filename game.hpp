@@ -18,7 +18,6 @@ PS *peaShooter;
 Texture background;
 void update();
 void render();
-bool isDraggimg;
 Event event;
 Sprite sprite;
 void handleEvents();
