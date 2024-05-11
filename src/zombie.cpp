@@ -18,7 +18,7 @@ Zombie :: Zombie()
 
 void Zombie :: update()
 {
-    pose.x -= 0.2;
+    pose.x -= 0.3;
 }
 
 void Zombie :: render(RenderWindow  &window)

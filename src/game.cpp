@@ -35,7 +35,7 @@ void Game :: update()
 {
     peaShooter[0] -> update(mousePose);
     handler->update(pose);
-    handler->deleteds(sprite.getGlobalBounds());
+    handler->deletedOutOfBounds(sprite.getGlobalBounds());
 }
 
 void Game :: handleEvents()

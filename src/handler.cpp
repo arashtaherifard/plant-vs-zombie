@@ -15,7 +15,7 @@ void Handler :: render(RenderWindow  &window)
 
 void Handler :: collision()
 {
-    vector <Zombie *> trashZombies;
+    
     vector <Projectile *> trashProjectiles;
     for (int i = 0; i < projectiles.size(); i++)
     {
@@ -23,18 +23,30 @@ void Handler :: collision()
         {
             if (projectiles[i]->getRect().intersects(zombies[j]->getRect()))
             {
-                trashZombies.push_back(zombies[j]);
+                // trashZombies.push_back(zombies[j]);
+                if(zombies[j]->life > 0)
+                    zombies[j]->life--;
                 trashProjectiles.push_back(projectiles[i]);
             }
         }
     }
-
     for (int i = 0; i < trashProjectiles.size(); i++)
     {
         projectiles.erase(remove(projectiles.begin(), projectiles.end(), trashProjectiles[i]), projectiles.end());
         delete trashProjectiles[i];
     }
+}
 
+void Handler ::  deleteZombies()
+{
+    vector <Zombie *> trashZombies;
+    for (int i = 0; i < zombies.size(); i++)
+    {
+        if (zombies[i]->life == 0)
+        {
+            trashZombies.push_back(zombies[i]);
+        }
+    }
     for (int i = 0; i < trashZombies.size(); i++)
     {
         zombies.erase(remove(zombies.begin(), zombies.end(), trashZombies[i]), zombies.end());
@@ -50,7 +62,7 @@ void Handler :: addProjectiles(vector<Vector2f> pose)
     }
 }
 
-void Handler :: deleteds(FloatRect windowBounds)
+void Handler :: deletedOutOfBounds(FloatRect windowBounds)
 {
     vector<Projectile *> trash;
     for (int i = 0; i < projectiles.size(); i++)
@@ -74,7 +86,6 @@ void Handler :: addZombies()
 
 void Handler :: update(vector<Vector2f> pose)
 {
-    
     Time Ptime = Pclock.getElapsedTime();
     if(Ptime.asMilliseconds() >= 600)
     {
@@ -96,4 +107,5 @@ void Handler :: update(vector<Vector2f> pose)
         zombies[i]->update();
     }
     collision();
+    deleteZombies();
 }

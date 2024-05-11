@@ -8,7 +8,8 @@ void render(RenderWindow  &window);
 void update(vector<Vector2f> pose);
 void addZombies();
 void addProjectiles(vector<Vector2f> pose);
-void deleteds(FloatRect windowBounds);
+void deletedOutOfBounds(FloatRect windowBounds);
+void deleteZombies();
 private : 
 void collision();
 
