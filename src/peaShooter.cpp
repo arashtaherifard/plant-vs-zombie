@@ -6,7 +6,7 @@ PS :: PS(int x, int y)
         return;
     }
     sprite.setTexture(image);
-    sprite . setScale(0.045, 0.045);
+    sprite . setScale(0.04, 0.04);
     sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
     sprite.setPosition(30,30);
     life = 5;

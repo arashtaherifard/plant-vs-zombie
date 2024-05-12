@@ -7,53 +7,61 @@ Game :: Game(int width, int height)
     {
         return ;
     }
+    lineFiller();
+    for (int i = 0; i < 5; i++)
+    {
+        blocksPose(i);
+    }
     sprite.setTexture(background);
     window.setFramerateLimit(144);
-    peaShooter.push_back(new PS(1,2));
     handler = new Handler;
     player = new Player;
+    sidebar = new Sidebar;
+    // for (int i = 0; i < 45; i++)
+    // {
+    //     player->generateSnowShooters(blockCenters[i], i);
+    // }
+    
+    peaShooter.push_back(new PS(blockCenters[0].x,blockCenters[0].y));
     if(!music.openFromFile("music.mp3"))
     {
         return;
     }
+
     music.setLoop(true);
     music.play();
-    blocksPose();
 }
 
-void Game :: blocksPose()
+void Game :: lineFiller()
 {
     blockCenters.resize(45);
-    isGenerated.resize(45);
     for (int i = 0; i < 45; i++)
     {
-        isGenerated[i] = false;
+        isGenerated.push_back(false);
     }
-    blockCenters[0].x = 294;
-    blockCenters[0].y = 127;
-    int count = 0;
-    while (count < 5)
+    blockCenters[0].x = 300;
+    blockCenters[0].y = 160;
+    blockCenters[9].x = 300;
+    blockCenters[9].y = 255;
+    blockCenters[18].x = 300;
+    blockCenters[18].y = 360;
+    blockCenters[27].x = 300;
+    blockCenters[27].y = 460;
+    blockCenters[36].x = 300;
+    blockCenters[36].y = 560;
+}
+
+void Game :: blocksPose(int count)
+{
+    
+    for (int i = count * 9; i < (count +1) * 9; i++)
     {
-        for (int i = 0; i < 9; i++)
+        if (i != count * 9)
         {
-            if (i == 0)
-            {
-                blockCenters[i].x = 294;
-            }
-            else
-            {
-                blockCenters[i].x = blockCenters[i-1].x + 80;
-                blockCenters[i].y = blockCenters[i-1].y;
-            }
-        } 
-        count++;
-        if(count < 5)
-        {
-        blockCenters[count * 9].x = 294;
-        blockCenters[count * 9].y = blockCenters[count * 9 - 1].y + 100;
+            blockCenters[i].x =  blockCenters[i - 1].x + 88;
+            blockCenters[i].y =  blockCenters[i - 1].y;
         }
     }
-    
 }
 
 void Game :: PvsZ(vector<FloatRect> zombiesRect)
@@ -86,15 +94,20 @@ void Game :: render()
     window.clear();
     window.draw(sprite);
     handler->render(window);
+    player->render(window);
     peaShooter[0]->render(window);
+    sidebar->render(window);
     window.display();  
 } 
 
 void Game :: poseSavor()
 {
-    for (int i = 0; i < peaShooter.size(); i++)
+    for (int i = 0; i < 45; i++)
     {
-        pose.push_back(Vector2f(peaShooter[i]->sprite.getPosition()));
+        if (isGenerated[i])
+        {
+            pose.push_back(blockCenters[i]);
+        }
     }
 } 
 
@@ -103,7 +116,6 @@ void Game :: update()
     peaShooter[0] -> update(mousePose);
     handler->update(pose);
     handler->deletedOutOfBounds(sprite.getGlobalBounds());
-      
 }
 
 void Game :: handleEvents()

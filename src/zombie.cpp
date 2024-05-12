@@ -8,12 +8,12 @@ Zombie :: Zombie()
     }    
     srand((unsigned) time(NULL));
     sprite.setTexture(image);
-    sprite.setScale(0.22,0.22);
+    sprite.setScale(0.2,0.2);
     sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
-    y.push_back(75);y.push_back(200);y.push_back(330);y.push_back(510);y.push_back(400);
+    y.push_back(110);y.push_back(220);y.push_back(310);y.push_back(525);y.push_back(420);
     pose.x = 1300 ;
     pose.y = y[rand()%5];
-    life = 3;
+    life = 10;
     isCollided = true;
 }
 

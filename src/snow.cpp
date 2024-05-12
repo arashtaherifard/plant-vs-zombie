@@ -1,7 +1,7 @@
 #include"snow.hpp"
 Snow :: Snow(Vector2f pose)
 {
-    if (!image.loadFromFile("spriters/snow pea/ProjectileSnowPea.png"))
+    if (!image.loadFromFile("spriters/snow/snow.png"))
     {
         return;
     }

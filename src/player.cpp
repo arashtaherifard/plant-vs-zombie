@@ -20,7 +20,6 @@ void Player :: render(RenderWindow &Window)
 void Player :: generatePeaShooters(Vector2f blocks, int count)
 {
     peaShooters.push_back(new PS(blocks.x, blocks.y));
-    
 }
 
 void Player :: generateSnowShooters(Vector2f blocks, int count)

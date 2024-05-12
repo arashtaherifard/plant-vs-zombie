@@ -1,6 +1,7 @@
 #pragma once
 #include"handler.hpp"
 #include"player.hpp"
+#include"sidebar.hpp"
 using namespace std;
 using namespace sf;
 
@@ -12,12 +13,14 @@ Game(int width, int height);
 void run();
 void checkMousePress();
 RenderWindow window;
-void blocksPose();
+void lineFiller();
+void blocksPose(int count);
 void generated();
 void generateObjects(int type);
 
 private:
 
+Sidebar *sidebar;
 Player *player;
 vector<Vector2f> blockCenters;
 vector<bool> isGenerated;
