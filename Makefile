@@ -1,4 +1,4 @@
-CXX = g++
+CXX =  g++ -I/opt/homebrew/Cellar/sfml/2.6.1/include -o A -L/opt/homebrew/Cellar/sfml/2.6.1/lib 
 CXXFLAGS = -std=c++17 -Wall -Wextra -I./include #-fsanitize=address -fsanitize=undefined
 LFLAGS = -L./files -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 SRCDIR = src
