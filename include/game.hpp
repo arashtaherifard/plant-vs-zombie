@@ -1,5 +1,6 @@
 #pragma once
 #include"handler.hpp"
+#include"player.hpp"
 using namespace std;
 using namespace sf;
 
@@ -11,11 +12,19 @@ Game(int width, int height);
 void run();
 void checkMousePress();
 RenderWindow window;
+void blocksPose();
+void generated();
+void generateObjects(int type);
 
 private:
 
+Player *player;
+vector<Vector2f> blockCenters;
+vector<bool> isGenerated;
+Clock clock;
+void PvsZ(vector<FloatRect> zombiesRect);
 Handler *handler;
-// Music music;
+Music music;
 Vector2f mousePose; 
 vector<PS*> peaShooter;
 Texture background;

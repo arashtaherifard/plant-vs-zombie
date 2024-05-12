@@ -1,7 +1,6 @@
 #include"peaShooter.hpp"
 PS :: PS(int x, int y)
 {
-    Clock internal;
     if (!image.loadFromFile("spriters/Peashooter/Peashooter.png"))
     {
         return;
@@ -10,6 +9,7 @@ PS :: PS(int x, int y)
     sprite . setScale(0.045, 0.045);
     sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
     sprite.setPosition(30,30);
+    life = 5;
     
 }
 
