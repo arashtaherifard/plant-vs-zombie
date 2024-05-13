@@ -8,6 +8,7 @@ potato :: potato(Vector2f pose, int blocks)
     }
     sprite.setTexture(image);
     sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
+    sprite.setScale(0.6, 0.6);
     sprite.setPosition(pose);
     block = blocks;
 }

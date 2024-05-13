@@ -6,7 +6,7 @@ Snow :: Snow(Vector2f pose)
         return;
     }
     sprite.setTexture(image);
-    sprite.setScale(0.2,0.2);
+    sprite.setScale(0.062,0.062);
     spritePose = pose;
 }
 
@@ -17,7 +17,8 @@ void Snow  :: update()
 
 void Snow :: render(RenderWindow  &window)
 {
-    sprite.setPosition(spritePose.x + 4, spritePose.y-25);
+    // sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
+    sprite.setPosition(spritePose.x + 30, spritePose.y - 22);
     update();
     window.draw(sprite);
 }

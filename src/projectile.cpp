@@ -17,7 +17,7 @@ void Projectile :: update()
 
 void Projectile :: render(RenderWindow  &window)
 {
-    sprite.setPosition(spritePose.x + 4, spritePose.y-25);
+    sprite.setPosition(spritePose.x + 10, spritePose.y - 30);
     update();
     window.draw(sprite);
 }

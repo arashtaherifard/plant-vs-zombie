@@ -7,6 +7,10 @@ Game :: Game(int width, int height)
     {
         return ;
     }
+    for (int i = 0; i < 45; i++)
+    {
+        count.push_back(0);
+    }
     lineFiller();
     for (int i = 0; i < 5; i++)
     {
@@ -17,12 +21,6 @@ Game :: Game(int width, int height)
     handler = new Handler;
     player = new Player;
     sidebar = new Sidebar;
-    // for (int i = 0; i < 45; i++)
-    // {
-    //     player->generateSnowShooters(blockCenters[i], i);
-    // }
-    
-    peaShooter.push_back(new PS(blockCenters[0].x,blockCenters[0].y));
     if(!music.openFromFile("music.mp3"))
     {
         return;
@@ -39,16 +37,16 @@ void Game :: lineFiller()
     {
         isGenerated.push_back(false);
     }
-    blockCenters[0].x = 300;
-    blockCenters[0].y = 160;
-    blockCenters[9].x = 300;
-    blockCenters[9].y = 255;
-    blockCenters[18].x = 300;
-    blockCenters[18].y = 360;
-    blockCenters[27].x = 300;
-    blockCenters[27].y = 460;
-    blockCenters[36].x = 300;
-    blockCenters[36].y = 560;
+    blockCenters[0].x = 295;
+    blockCenters[0].y = 140;
+    blockCenters[9].x = 295;
+    blockCenters[9].y = 235;
+    blockCenters[18].x = 295;
+    blockCenters[18].y = 330;
+    blockCenters[27].x = 295;
+    blockCenters[27].y = 435;
+    blockCenters[36].x = 295;
+    blockCenters[36].y = 520;
 }
 
 void Game :: blocksPose(int count)
@@ -58,36 +56,40 @@ void Game :: blocksPose(int count)
     {
         if (i != count * 9)
         {
-            blockCenters[i].x =  blockCenters[i - 1].x + 88;
+            blockCenters[i].x =  blockCenters[i - 1].x + 82;
             blockCenters[i].y =  blockCenters[i - 1].y;
         }
     }
 }
 
-void Game :: PvsZ(vector<FloatRect> zombiesRect)
-{
-    for(int i = 0; i< zombiesRect.size(); i++)
-    {
-        if (peaShooter[0]->getRect().intersects(zombiesRect[i]))
-        {
-            Time time = clock.getElapsedTime();
-            if(time.asMilliseconds() >= 1000 && peaShooter[0]->life > 0)
-            {   
-                peaShooter[0]->life--;
-                handler->isCollidedSetter(i, false);           
-                clock.restart();    
-            }
-            
-            if (peaShooter[0]-> life == 0)
-            {
-                peaShooter[0]->life = 5;
-                handler->isCollidedSetter(i, true);
-            }
-        }
-    }
-}
+// void Game :: PvsZ()
+// {
+    
+//         for(int i = 0; i< handler->getZombiesCount(); i++)
+//         {
+//             for(int j = 0; j< player->getPeaShootersCount(); j++)
+//             {
+//                 if (player->getPeaShooterRect(j).intersects(handler->getZobieRect(i)))
+//                 {
+//                     Time time = clock.getElapsedTime();
+//                     if(time.asMilliseconds() >= 1000 && > 0)
+//                     {   
+//                         peaShooter[i]->life--;
+//                         handler->isCollidedSetter(i, false);           
+//                         clock.restart();    
+//                     }
+                    
+//                     if (peaShooter[i]-> life == 0)
+//                     {
+//                         peaShooter[i]->life = 5;
+//                         handler->isCollidedSetter(i, true);
+//                     }
+//                 } 
+//             }
+//         }
+// }
 
-Game :: ~Game(){delete peaShooter[0];}
+Game :: ~Game(){}
 
 void Game :: render()
 {
@@ -95,47 +97,81 @@ void Game :: render()
     window.draw(sprite);
     handler->render(window);
     player->render(window);
-    peaShooter[0]->render(window);
-    sidebar->render(window);
+    sidebar->render(event, window);
     window.display();  
 } 
 
-void Game :: poseSavor()
+void Game :: snowShooterPoseSavor(Vector2f blockCenter)
 {
-    for (int i = 0; i < 45; i++)
-    {
-        if (isGenerated[i])
-        {
-            pose.push_back(blockCenters[i]);
-        }
-    }
+    snowShooterPose.push_back(blockCenter);
+} 
+
+void Game :: peaShooterPoseSavor(Vector2f blockCenter)
+{
+    peaShooterPose.push_back(blockCenter);
 } 
 
 void Game :: update()
 {
-    peaShooter[0] -> update(mousePose);
-    handler->update(pose);
+    handler->generateRandomSuns();
+    handler->update(peaShooterPose, snowShooterPose);
     handler->deletedOutOfBounds(sprite.getGlobalBounds());
+    sidebar->update(event, window, blockCenters, isGenerated);
 }
 
 void Game :: handleEvents()
 {
-    mousePose = Vector2f(Mouse::getPosition(window));
-    if (event.type == Event :: MouseButtonPressed)
-    { 
-        if ((event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left )
-        && peaShooter[0]->sprite.getGlobalBounds().contains(mousePose))
-        {
-            peaShooter[0]->isDragging = true;
-            if(pose.size() !=0)
-                pose.pop_back();
-        } 
-    }
-    else if(event.type == Event :: MouseButtonReleased)
+    objectType = sidebar->checkDrag(event, window, blockCenters, isGenerated);
+}
+
+void Game :: generatePlants()
+{
+    
+    if(objectType == 1)
     {
-        peaShooter[0]->isDragging = false; 
-        if(peaShooter[0]->sprite.getGlobalBounds().contains(mousePose))
-        poseSavor();
+        for (int i = 0; i < 45; i++)
+            {
+                if (isGenerated[i] && count[i]==0)
+                {
+                    player->generatePeaShooters(blockCenters[i], i);
+                    count[i] = 1;
+                    peaShooterPoseSavor(blockCenters[i]);
+                }   
+            } 
+    }
+    if(objectType == 2)
+    {
+        for (int i = 0; i < 45; i++)
+            {
+                if (isGenerated[i] && count[i]==0)
+                {
+                    player->generateSnowShooters(blockCenters[i], i);
+                    count[i] = 1;
+                    snowShooterPoseSavor(blockCenters[i]);
+                }   
+            } 
+    }
+    if(objectType == 3)
+    {
+        for (int i = 0; i < 45; i++)
+            {
+                if (isGenerated[i] && count[i]==0)
+                {
+                    player->generatePotatos(blockCenters[i], i);
+                    count[i] = 1;
+                }   
+            } 
+    }
+    if(objectType == 4)
+    {
+        for (int i = 0; i < 45; i++)
+            {
+                if (isGenerated[i] && count[i]==0)
+                {
+                    player->generateFlowers(blockCenters[i], i);
+                    count[i] = 1;
+                }   
+            } 
     }
 }
 
@@ -148,12 +184,16 @@ void Game :: run()
         while (window.pollEvent(event))
         {
             handleEvents();
+            generatePlants();
             if (event.type == Event::Closed)
-            window.close();    
-        }
+            window.close();   
+        }           
+        
+        // PvsZ(handler->getZombieRect());
+        
         update();
         render();
-        PvsZ(handler->getZombieRect()); 
+        
     }
 }
 

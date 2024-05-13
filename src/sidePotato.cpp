@@ -1,18 +1,97 @@
 #include "sidePotato.hpp"
-
-sidePotato::sidePotato(float x, float y) {
-    if (!sidePotatoTexture.loadFromFile("spriters/images/icon_walnut.png")) {
+#include "cmath"
+sidePotato::sidePotato(float x, float y) 
+{
+    if (!sidePotatoTexture.loadFromFile("spriters/images/icon_walnut.png")||!fake.loadFromFile("spriters/wall-nut/Wallnut_body.png")) {
         return;
     }
     sprite.setTexture(sidePotatoTexture);
     sprite.setScale(0.35,0.35);
     sprite.setPosition(x, y);
+
+    isDragging = false;
+    fakeSprite.setTexture(fake);
+    fakeSprite.setOrigin(fakeSprite.getPosition().x+fakeSprite.getTextureRect().width/2 , fakeSprite.getPosition().x+fakeSprite.getTextureRect().height/2 );
+    fakeSprite.setScale(0.6, 0.6);
+    type = 3;
 }
 
-void sidePotato::render(RenderWindow &window) {
+void sidePotato::render(Event &event, RenderWindow &window) 
+{
+    
     window.draw(sprite);
+    if(isDragging)
+    {
+        window.draw(fakeSprite);
+    }
 }
 
-bool sidePotato::contains(Vector2f point) {
-    return sprite.getGlobalBounds().contains(point);
+
+int sidePotato :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
+{
+    Vector2f mousePose = Vector2f(Mouse::getPosition(window));
+    if (event.type == Event :: MouseButtonPressed)
+    { 
+        if ((event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left )
+        && sprite.getGlobalBounds().contains(mousePose))
+        {
+            isDragging = true;
+        } 
+    }
+    else if(event.type == Event :: MouseButtonReleased)
+    {
+        isDragging = false; 
+        if(fakeSprite.getGlobalBounds().contains(mousePose))
+        {
+            releasedPose = mousePose;
+            changeStatus(blocksPose, isGenerated);
+            return type;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    return 0;
+}
+
+void sidePotato :: dragAndDrop(Event &event, RenderWindow &window)
+{
+    Vector2f mousePose = Vector2f(Mouse::getPosition(window));
+    if (isDragging)
+    {
+        fakeSprite.setPosition(mousePose);
+    }
+}
+
+
+void sidePotato :: update(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
+{
+    if(isDragging)
+    {
+        dragAndDrop(event, window);
+    }
+}
+
+int sidePotato :: getDistance(Vector2f first, Vector2f second)
+{
+    return sqrt(pow(first.x - second.x, 2) + pow(first.y - second.y, 2));
+}
+
+int sidePotato :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated)
+{
+    int count = 0;
+    int distance = getDistance(releasedPose, blocksPose[0]);
+    for (int i = 0; i < 45; i++)
+    {
+        if(i!=0)
+        {
+            if (getDistance(releasedPose, blocksPose[i]) <= distance)
+            {
+                count = i;
+                distance = getDistance(releasedPose, blocksPose[i]);
+            }
+        }
+    }
+    isGenerated[count] = true;
 }

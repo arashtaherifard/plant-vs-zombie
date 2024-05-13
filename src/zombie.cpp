@@ -13,7 +13,7 @@ Zombie :: Zombie()
     y.push_back(110);y.push_back(220);y.push_back(310);y.push_back(525);y.push_back(420);
     pose.x = 1300 ;
     pose.y = y[rand()%5];
-    life = 10;
+    life = 5;
     isCollided = true;
 }
 

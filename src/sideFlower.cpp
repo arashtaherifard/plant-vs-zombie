@@ -1,24 +1,24 @@
-#include "sideSnowPea.hpp"
+#include "Flower.hpp"
 #include "cmath"
-using namespace std;
-sideSnowPea :: sideSnowPea(float x, float y) 
+sideFlower::sideFlower(float x, float y) 
 {
-    if (!sideSnowTexture.loadFromFile("spriters/images/sideSnowPea.png")||!fake.loadFromFile("spriters/snow/HDplus_snowpea.png")) {
+    if (!sideFlowerTexture.loadFromFile("spriters/images/icon_sunflower.png")||!fake.loadFromFile("spriters/sunflower/Sunflower.png")) {
         return;
     }
-    sprite.setTexture(sideSnowTexture);
-    sprite.setScale(0.28,0.28);
+    sprite.setTexture(sideFlowerTexture);
+    sprite.setScale(0.35,0.35);
     sprite.setPosition(x, y);
 
     isDragging = false;
     fakeSprite.setTexture(fake);
     fakeSprite.setOrigin(fakeSprite.getPosition().x+fakeSprite.getTextureRect().width/2 , fakeSprite.getPosition().x+fakeSprite.getTextureRect().height/2 );
-    fakeSprite.setScale(0.06, 0.06);
-    type = 2;
+    fakeSprite.setScale(0.04, 0.04);
+    type = 4;
 }
 
-void sideSnowPea :: render(Event &event, RenderWindow &window) 
+void sideFlower :: render(Event &event, RenderWindow &window) 
 {
+    
     window.draw(sprite);
     if(isDragging)
     {
@@ -27,7 +27,7 @@ void sideSnowPea :: render(Event &event, RenderWindow &window)
 }
 
 
-int sideSnowPea :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
+int sideFlower :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
 {
     Vector2f mousePose = Vector2f(Mouse::getPosition(window));
     if (event.type == Event :: MouseButtonPressed)
@@ -55,7 +55,7 @@ int sideSnowPea :: checkDrag(Event &event, RenderWindow &window, vector <Vector2
     return 0;
 }
 
-void sideSnowPea :: dragAndDrop(Event &event, RenderWindow &window)
+void sideFlower :: dragAndDrop(Event &event, RenderWindow &window)
 {
     Vector2f mousePose = Vector2f(Mouse::getPosition(window));
     if (isDragging)
@@ -65,7 +65,7 @@ void sideSnowPea :: dragAndDrop(Event &event, RenderWindow &window)
 }
 
 
-void sideSnowPea :: update(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
+void sideFlower :: update(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
 {
     if(isDragging)
     {
@@ -73,12 +73,12 @@ void sideSnowPea :: update(Event &event, RenderWindow &window, vector <Vector2f>
     }
 }
 
-int sideSnowPea :: getDistance(Vector2f first, Vector2f second)
+int sideFlower :: getDistance(Vector2f first, Vector2f second)
 {
     return sqrt(pow(first.x - second.x, 2) + pow(first.y - second.y, 2));
 }
 
-int sideSnowPea :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated)
+int sideFlower :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated)
 {
     int count = 0;
     int distance = getDistance(releasedPose, blocksPose[0]);
@@ -95,4 +95,3 @@ int sideSnowPea :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isG
     }
     isGenerated[count] = true;
 }
-

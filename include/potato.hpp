@@ -15,4 +15,5 @@ private :
 
 Sprite sprite;
 Texture image;
+
 };

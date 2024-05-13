@@ -1,19 +1,20 @@
-#include"snowShooter.hpp"
+#include"sunFlower.hpp"
 
-SS :: SS(Vector2f pose, int blocks)
+SunFlower :: SunFlower(Vector2f pose, int blocks)
 {
-    if (!image.loadFromFile("spriters/snow/HDplus_snowpea.png"))
+    if (!image.loadFromFile("spriters/sunflower/Sunflower.png"))
     {
         return;
     }
     sprite.setTexture(image);
-    sprite.setScale(0.06, 0.06);
     sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
+    sprite.setScale(0.04, 0.04);
     sprite.setPosition(pose);
     block = blocks;
 }
 
-void SS :: render(RenderWindow &window)
+
+void SunFlower :: render(RenderWindow &window)
 {
     window.draw(sprite);
 }
