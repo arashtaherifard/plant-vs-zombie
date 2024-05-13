@@ -7,7 +7,7 @@ using namespace sf;
 class PS{
 public: 
 
-PS(int x, int y);
+PS(Vector2f pose, int count);
 void update(Vector2f pose);
 void render(RenderWindow  &window);
 bool isDragging;

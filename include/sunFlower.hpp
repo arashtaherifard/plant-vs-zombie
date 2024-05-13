@@ -2,11 +2,11 @@
 using namespace std;
 using namespace sf;
 
-class potato
+class SunFlower
 {
 public :
 
-potato(Vector2f pose, int blocks);
+SunFlower(Vector2f pose, int blocks);
 void render(RenderWindow  &window);
 int life;
 int block;

@@ -10,12 +10,11 @@ public:
     RandomSun();
     void render(RenderWindow &window);
     void update();
-
+    FloatRect getRect(){return sunSprite.getGlobalBounds();};
 private:
+
     Sprite sunSprite;
     Texture sunTexture;
     Vector2f position;
     float fallSpeed;
-    vector<int> x;
-
 };
