@@ -9,13 +9,14 @@ public:
     sidePeaShooter(float x, float y);
     void render(Event &event, RenderWindow &window);
     bool contains(Vector2f point);
-    int checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated);
+    int checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated, int &storage);
     void dragAndDrop(Event &event, RenderWindow &window);
-    void update(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated);
-    int changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated);
+    void update(Event &event, RenderWindow &window);
+    int changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated, int &storage);
     int getDistance(Vector2f first, Vector2f second);
 private:
     int type;
+    int counter;
     bool isDragging;
     Vector2f releasedPose;
     Sprite sprite;

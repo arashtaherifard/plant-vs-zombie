@@ -15,12 +15,15 @@ public:
     Sidebar();
     void render(Event event, RenderWindow &window);
     void update(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated);
-    int checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated);
-    // void handleEvents(Event event, Vector2f mousePose);
-    //void addSidePeaShooter;
-    //void addSideSnowPea;
-    //void addFlower;
+    void sunSetter(int store){sunStore += store;};
+    int checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated, int &storage);
+    int sunGetter(){return sunStore;};
+    void setText();
+    
 private:
+
+    int sunStore;
+    Text storage;
     sunStorage *sun;
     sidePeaShooter *sidePeaShooters;
     sideSnowPea *sideSnowPeas;

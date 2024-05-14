@@ -3,7 +3,6 @@
 using namespace std;
 void Player :: render(RenderWindow &Window)
 {
-    
     for (int i = 0; i < potatos.size(); i++)
     {
         potatos[i]->render(Window);
@@ -43,15 +42,17 @@ void Player :: generateFlowers(Vector2f blocks, int &count)
     flowers.push_back(new SunFlower(blocks, count));
 }
 
-void Player:: trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShooters, vector<SS*> &trashSnowShooters
-, vector<potato*> &trashPotatos, vector<SunFlower*> &trashFlowers)
+void Player :: trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShooters, vector<SS*> &trashSnowShooters
+, vector<potato*> &trashPotatos, vector<SunFlower*> &trashFlowers, vector<Vector2f> &trashPose, vector<Vector2f> &peaShootrerPose, vector<bool> &check)
 {
     for (int i = 0; i < peaShooters.size(); i++)
     {
         if (peaShooters[i]->life == 0)
         {
-            trashPeaShooters.push_back(peaShooters[i]);
             isGenerated[peaShooters[i]->block] = false;
+            check[peaShooters[i]->block] = false;
+            trashPeaShooters.push_back(peaShooters[i]);
+            trashPose.push_back(peaShootrerPose[i]);
         }
     }
 
@@ -60,6 +61,7 @@ void Player:: trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShoote
         if (snowShooters[i]->life == 0)
         {
             trashSnowShooters.push_back(snowShooters[i]);
+            check[snowShooters[i]->block] = false;
             isGenerated[snowShooters[i]->block] = false;
         }
     }
@@ -69,6 +71,7 @@ void Player:: trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShoote
         if (potatos[i]->life == 0)
         {
             trashPotatos.push_back(potatos[i]);
+            check[potatos[i]->block] = false;
             isGenerated[potatos[i]->block] = false;
         }
     }
@@ -77,18 +80,69 @@ void Player:: trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShoote
         if (flowers[i]->life == 0)
         {
             trashFlowers.push_back(flowers[i]);
+            check[flowers[i]->block] = false;
             isGenerated[flowers[i]->block] = false;
         }
     }
 }
 
-void Player :: deleter(vector<bool> &isGenerated)
+void Player :: peaShooterCollide(int count)
+{
+    peaShooters[count]->isCollided = true;
+    peaShooters[count]->collided();
+}
+void Player :: snowShooterCollide(int count)
+{
+    snowShooters[count]->isCollided = true;
+    snowShooters[count]->collided();
+}
+
+void Player :: potatoCollide(int count)
+{
+    potatos[count]->isCollided = true;
+    potatos[count]->collided();
+}
+
+void Player :: sunFlowerCollide(int count)
+{
+    flowers[count]->isCollided = true;
+    flowers[count]->collided();
+}
+
+FloatRect Player :: getPeaShooterRect(int count)
+{
+    return peaShooters[count]->getRect();
+}
+
+FloatRect Player :: getSnowShooterRect(int count)
+{
+    return snowShooters[count]->getRect();
+}
+
+FloatRect Player :: getPotatoRect(int count)
+{
+    return potatos[count]->getRect();
+}
+
+FloatRect Player :: getSunFlowerRect(int count)
+{
+    return flowers[count]->getRect();
+}
+
+void Player :: deleter(vector<bool> &isGenerated, vector<Vector2f> &peaShootrerPose, vector<bool> &check)
 {
     vector<PS*> trashPeaShooters; 
     vector<SS*> trashSnowShooters; 
     vector<potato*> trashPotatos;
     vector<SunFlower*> trashFlowers;
-    trashFiller(isGenerated, trashPeaShooters, trashSnowShooters, trashPotatos, trashFlowers);
+    vector<Vector2f> trashPose;
+    trashFiller(isGenerated, trashPeaShooters, trashSnowShooters, trashPotatos, trashFlowers, trashPose, peaShootrerPose, check);
+    for (int i = 0; i < trashPose.size(); i++)
+    {
+        peaShootrerPose.erase(remove(peaShootrerPose.begin(), peaShootrerPose.end(), trashPose[i]), peaShootrerPose.end());
+        trashPose.clear();
+    }
+    
     for (int i = 0; i < trashPeaShooters.size(); i++)
     {
         peaShooters.erase(remove(peaShooters.begin(), peaShooters.end(), trashPeaShooters[i]), peaShooters.end());

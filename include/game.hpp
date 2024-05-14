@@ -18,15 +18,17 @@ void blocksPose(int count);
 void generatePlants();
 void update();
 void render();
-
+void sunHandler();
 private:
 
+vector<int> collision;
+int storage;
 int objectType;
-vector<int> count;
 Sidebar *sidebar;
 Player *player;
 vector<Vector2f> blockCenters;
 vector<bool> isGenerated;
+vector<bool> check;
 Clock clock;
 void PvsZ();
 Handler *handler;
@@ -39,5 +41,6 @@ vector<Vector2f>snowShooterPose;
 vector<Vector2f>peaShooterPose;
 void snowShooterPoseSavor(Vector2f blockCenter);
 void peaShooterPoseSavor(Vector2f blockCenter);
+void generator();
 void handleEvents();
 }; 

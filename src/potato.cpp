@@ -8,9 +8,24 @@ potato :: potato(Vector2f pose, int blocks)
     }
     sprite.setTexture(image);
     sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
-    sprite.setScale(0.6, 0.6);
+    sprite.setScale(0.55, 0.55);
     sprite.setPosition(pose);
+    life = 15;
+    isCollided = false;
     block = blocks;
+}
+
+void potato :: collided()
+{
+    Time time = clock.getElapsedTime();
+    if (isCollided)
+    {
+        if (time.asMilliseconds() >= 1000 && life!=0)
+        {
+            life--;
+            clock.restart();
+        }
+    } 
 }
 
 void potato :: render(RenderWindow &window)

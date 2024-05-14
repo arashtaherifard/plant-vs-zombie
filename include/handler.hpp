@@ -21,6 +21,9 @@ void peaGenerator(vector<Vector2f> pose);
 int getZombiesCount(){return zombies.size();};
 FloatRect getZobieRect(int count);
 void generateRandomSuns();
+void sunCollector(RenderWindow &window);
+void deleteCollectedSuns(vector<RandomSun*> &trashSuns);
+int sun;
 private : 
 
 vector<RandomSun *> randomSuns;

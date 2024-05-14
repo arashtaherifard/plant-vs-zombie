@@ -1,4 +1,5 @@
 #include"handler.hpp"
+using namespace sf;
 void Handler :: render(RenderWindow  &window)
 {
     deleteZombies();
@@ -26,7 +27,7 @@ void Handler :: render(RenderWindow  &window)
 void Handler :: generateRandomSuns()
 {
     Time time = clock.getElapsedTime();
-    if (time.asMilliseconds() >= 7000)
+    if (time.asMilliseconds() >= 3000)
     {
         clock.restart();
         randomSuns.push_back(new RandomSun());
@@ -160,7 +161,7 @@ void Handler :: deletedOutOfBounds(FloatRect windowBounds)
             trashSuns.push_back(randomSuns[i]);
         }
     }
-    for (int i = 0; i < trashZ.size(); i++)
+    for (int i = 0; i < trashSuns.size(); i++)
     {
         randomSuns.erase(remove(randomSuns.begin(), randomSuns.end(), trashSuns[i]), randomSuns.end());
         delete trashSuns[i];
@@ -175,7 +176,7 @@ void Handler :: addZombies()
 void Handler :: snowGenerator(vector<Vector2f> pose)
 {
     Time Stime = Sclock.getElapsedTime();
-    if(Stime.asMilliseconds() >= 500)
+    if(Stime.asMilliseconds() >= 600)
     {
         Sclock.restart();
         addSnows(pose);
@@ -190,7 +191,7 @@ void Handler :: snowGenerator(vector<Vector2f> pose)
 void Handler :: peaGenerator(vector<Vector2f> pose)
 {
     Time Ptime = Pclock.getElapsedTime();
-    if(Ptime.asMilliseconds() >= 500)
+    if(Ptime.asMilliseconds() >= 600)
     {
         Pclock.restart();
         addProjectiles(pose);
@@ -201,11 +202,37 @@ void Handler :: peaGenerator(vector<Vector2f> pose)
     }
 }
 
+void Handler :: deleteCollectedSuns(vector<RandomSun*> &trashSuns)
+{
+    for (int i = 0; i < trashSuns.size(); i++)
+    {
+        randomSuns.erase(remove(randomSuns.begin(), randomSuns.end(), trashSuns[i]), randomSuns.end());
+        delete trashSuns[i];
+    }
+    
+}
+
+void Handler :: sunCollector(RenderWindow &window)
+{
+    vector<RandomSun*> trashSuns;
+    Vector2f mousepose = Vector2f(Mouse :: getPosition(window));
+    sun = 0;
+    for(int i = 0; i < randomSuns.size();i++)
+    {
+        if (randomSuns[i]->getRect().contains(mousepose))
+        {
+            sun = sun + 25;
+            trashSuns.push_back(randomSuns[i]);
+            deleteCollectedSuns(trashSuns);
+        }
+    }
+}
+
 void Handler :: update( vector<Vector2f> peaShooterPose, vector<Vector2f> snowShooterPose)
 {
     
     Time Ztime = Zclock.getElapsedTime();
-    if(Ztime.asMilliseconds() >= 2000)
+    if(Ztime.asMilliseconds() >= 4000)
     {
         Zclock.restart();
         addZombies();

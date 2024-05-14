@@ -10,9 +10,23 @@ PS :: PS(Vector2f pose, int count)
     sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
     sprite.setPosition(pose);
     life = 5;
+    isCollided = false;
     block = count;
+    
 }
 
+void PS :: collided()
+{
+    Time time = clock.getElapsedTime();
+    if (isCollided)
+    {
+        if (time.asMilliseconds() >= 1000 && life!=0)
+        {
+            life--;
+            clock.restart();
+        }
+    } 
+}
 // void PS :: fixPosition()
 // {
 //     FloatRect rect = sprite.getGlobalBounds();
@@ -22,14 +36,6 @@ PS :: PS(Vector2f pose, int count)
 //     rect.top = min(rect.top, 1400 - rect.width);
 //     sprite.setPosition(rect.left, rect.top);
 // }
-
-void PS :: update(Vector2f mousePose)
-{
-    if (isDragging)
-    {
-        sprite.setPosition(mousePose);
-    }
-}
 
 void PS :: render(RenderWindow &window)
 {

@@ -14,13 +14,14 @@ Zombie :: Zombie()
     pose.x = 1300 ;
     pose.y = y[rand()%5];
     life = 5;
-    isCollided = true;
+    isCollided = false;
 }
 
 void Zombie :: update()
 {
-    if(isCollided)
-        pose.x -= 0.3;
+    if(!isCollided)
+        pose.x -= 0.2;
+    
 }
 
 void Zombie :: render(RenderWindow  &window)

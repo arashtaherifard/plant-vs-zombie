@@ -8,84 +8,93 @@ Sidebar::Sidebar()
     sidePeaShooters = new sidePeaShooter(30,170);
     sideSnowPeas = new sideSnowPea(30, 240);
     sidePotatos = new sidePotato(30,310);
+    storage.setString(": ");
 
 }
 
 void Sidebar::render(Event event, RenderWindow &window) 
 {
+    
     sidePotatos->render(event, window);
     sidePeaShooters->render(event, window);
     sideSnowPeas->render(event, window);
     flowers->render(event, window);
     sun->render(window);
+    setText();
+    window.draw(storage);
 }
 
 void Sidebar :: update(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
 {
     flowers->update(event, window, blocksPose, isGenerated);
     sidePotatos->update(event, window, blocksPose, isGenerated);
-    sidePeaShooters->update(event, window, blocksPose, isGenerated);
-    sideSnowPeas->update(event, window, blocksPose, isGenerated);
+    sidePeaShooters->update(event, window);
+    sideSnowPeas->update(event, window, blocksPose, isGenerated);   
 }
 
+void Sidebar :: setText()
+{
+    Font font;
+    if(font.loadFromFile("spriters/font/ARIAL.ttf"))
+    {
+        return;
+    }
+    storage.setFont(font);
+    storage.setString(": " + to_string(sunStore));
+    storage.setCharacterSize(40);
+    storage.setFillColor(Color::Black);
+    storage.setPosition(100,40);
 
+}
 
-int Sidebar :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
+int Sidebar :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated, int &storage)
 {   
-    if (sidePotatos->checkDrag(event, window, blocksPose, isGenerated))
+    int val = sidePeaShooters->checkDrag(event, window, blocksPose, isGenerated, storage);
+    if (val)
     {
-        return sidePotatos->checkDrag(event, window, blocksPose, isGenerated);
+        return val;
     }
-    if(sidePeaShooters->checkDrag(event, window, blocksPose, isGenerated))
+    val = sidePotatos->checkDrag(event, window, blocksPose, isGenerated, storage);
+    if (val)
     {
-        return sidePeaShooters->checkDrag(event, window, blocksPose, isGenerated);
+        return val;
     }
-    if(sideSnowPeas->checkDrag(event, window, blocksPose, isGenerated))
+    val = sideSnowPeas->checkDrag(event, window, blocksPose, isGenerated, storage);
+    if (val)
     {
-        return sideSnowPeas->checkDrag(event, window, blocksPose, isGenerated);
+        return val;
     }
-    if (flowers->checkDrag(event, window, blocksPose, isGenerated))
+    val = flowers->checkDrag(event, window, blocksPose, isGenerated, storage);
+    if (val)
     {
-        return flowers->checkDrag(event, window, blocksPose, isGenerated);
+        return val;
+    }
+    if (val == 0)
+    {
+        return 0;
     }
     
+    /*if (sidePotatos->checkDrag(event, window, blocksPose, isGenerated, storage))
+    {
+        return sidePotatos->checkDrag(event, window, blocksPose, isGenerated, storage);
+    }
+    else if(sidePeaShooters->checkDrag(event, window, blocksPose, isGenerated, storage))
+    {
+        return sidePeaShooters->checkDrag(event, window, blocksPose, isGenerated, storage);
+    }
+    else if(sideSnowPeas->checkDrag(event, window, blocksPose, isGenerated, storage))
+    {
+        return sideSnowPeas->checkDrag(event, window, blocksPose, isGenerated, storage);
+    }
+    else if (flowers->checkDrag(event, window, blocksPose, isGenerated, storage))
+    {
+        return flowers->checkDrag(event, window, blocksPose, isGenerated, storage);
+    }
+    else
+    {
+        return 0;
+    }*/
 }
 
-// void Sidebar :: update(Event &event, RenderWindow &window)
-// {
-//     sidePotatos->update(event, window);
-// }
 
-/*void Sidebar::handleEvents(Event event, Vector2f mousePose) {
-    if (event.type == Event::MouseButtonPressed) {
-        if (event.mouseButton.button == Mouse::Left) {
-            for (auto &sidePeaShooter : sidePeaShooters) {
-                if (sidePeaShooter.contains(mousePose)) {
-                    // Do something when sidePeaShooter is clicked
-                }
-            }
-            for (auto &sideSnowPea : sideSnowPeas) {
-                if (sideSnowPea.contains(mousePose)) {
-                    // Do something when sideSnowPea is clicked
-                }
-            }
-            for (auto &flower : flowers) {
-                if (flower.contains(mousePose)) {
-                    // Do something when flower is clicked
-                }
-            }
-        }
-    }
-}*/
 
-// void Sidebar::addSidePeaShooter(float x, float y) {
-//     sidePeaShooter->emplace_back(x, y);
-// }
-
-// void Sidebar::addSideSnowPea(float x, float y) {
-//     sideSnowPea->emplace_back(x, y);
-// }
-
-// void Sidebar::addFlower(float x, float y) {
-//     flower.emplace_back(x, y);
-// }

@@ -8,17 +8,18 @@ class PS{
 public: 
 
 PS(Vector2f pose, int count);
-void update(Vector2f pose);
 void render(RenderWindow  &window);
-bool isDragging;
+bool isCollided;
+void collided();
 FloatRect getRect(){return sprite.getGlobalBounds();};
 // void fixPosition();
-Sprite sprite;
+
 int life;
 int block;
 
 private:
-
+Sprite sprite;
+Clock clock;
 Vector2f pose;
 Texture image;
 

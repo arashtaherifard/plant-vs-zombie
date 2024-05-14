@@ -27,7 +27,7 @@ void sideFlower :: render(Event &event, RenderWindow &window)
 }
 
 
-int sideFlower :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
+int sideFlower :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated, int &storage)
 {
     Vector2f mousePose = Vector2f(Mouse::getPosition(window));
     if (event.type == Event :: MouseButtonPressed)
@@ -36,23 +36,26 @@ int sideFlower :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f
         && sprite.getGlobalBounds().contains(mousePose))
         {
             isDragging = true;
+            return type;
         } 
     }
-    else if(event.type == Event :: MouseButtonReleased)
+    else if(isDragging && event.type == Event :: MouseButtonReleased)
     {
-        isDragging = false; 
+        Vector2f mousePose = Vector2f(Mouse::getPosition(window));
         if(fakeSprite.getGlobalBounds().contains(mousePose))
         {
             releasedPose = mousePose;
-            changeStatus(blocksPose, isGenerated);
+            changeStatus(blocksPose, isGenerated, storage);
+            isDragging = false; 
             return type;
         }
         else
         {
+            isDragging = false; 
             return 0;
         }
     }
-    return 0;
+    return 0 ;
 }
 
 void sideFlower :: dragAndDrop(Event &event, RenderWindow &window)
@@ -78,7 +81,8 @@ int sideFlower :: getDistance(Vector2f first, Vector2f second)
     return sqrt(pow(first.x - second.x, 2) + pow(first.y - second.y, 2));
 }
 
-int sideFlower :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated)
+int sideFlower :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated, int &storage)
+
 {
     int count = 0;
     int distance = getDistance(releasedPose, blocksPose[0]);
@@ -93,5 +97,8 @@ int sideFlower :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGe
             }
         }
     }
-    isGenerated[count] = true;
+    if(storage >= 50)
+    {
+        isGenerated[count] = true;
+    }
 }

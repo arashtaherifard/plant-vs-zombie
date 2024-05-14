@@ -15,6 +15,7 @@ void isCollidedSetter(bool is){isCollided = is;};
 int life;
 
 private:
+
 bool isCollided;
 Sprite sprite;
 Texture image;

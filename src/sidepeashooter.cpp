@@ -14,6 +14,7 @@ sidePeaShooter::sidePeaShooter(float x, float y)
     fakeSprite.setOrigin(fakeSprite.getPosition().x+fakeSprite.getTextureRect().width/2 , fakeSprite.getPosition().x+fakeSprite.getTextureRect().height/2 );
     fakeSprite.setScale(0.04, 0.04);
     type = 1;
+    counter = 0;
 }
 
 void sidePeaShooter :: render(Event &event, RenderWindow &window) 
@@ -26,28 +27,31 @@ void sidePeaShooter :: render(Event &event, RenderWindow &window)
 }
 
 
-int sidePeaShooter :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
+int sidePeaShooter :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated, int &storage)
 {
-    Vector2f mousePose = Vector2f(Mouse::getPosition(window));
+    
     if (event.type == Event :: MouseButtonPressed)
     { 
+        Vector2f mousePose = Vector2f(Mouse::getPosition(window));
         if ((event.mouseButton.button == Mouse::Right || event.mouseButton.button == Mouse::Left )
         && sprite.getGlobalBounds().contains(mousePose))
         {
             isDragging = true;
         } 
     }
-    else if(event.type == Event :: MouseButtonReleased)
+    else if(isDragging && event.type == Event :: MouseButtonReleased)
     {
-        isDragging = false; 
+        Vector2f mousePose = Vector2f(Mouse::getPosition(window));
         if(fakeSprite.getGlobalBounds().contains(mousePose))
         {
             releasedPose = mousePose;
-            changeStatus(blocksPose, isGenerated);
+            changeStatus(blocksPose, isGenerated, storage);
+            isDragging = false; 
             return type;
         }
         else
         {
+            isDragging = false; 
             return 0;
         }
     }
@@ -64,7 +68,7 @@ void sidePeaShooter :: dragAndDrop(Event &event, RenderWindow &window)
 }
 
 
-void sidePeaShooter :: update(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated)
+void sidePeaShooter :: update(Event &event, RenderWindow &window)
 {
     if(isDragging)
     {
@@ -77,7 +81,7 @@ int sidePeaShooter :: getDistance(Vector2f first, Vector2f second)
     return sqrt(pow(first.x - second.x, 2) + pow(first.y - second.y, 2));
 }
 
-int sidePeaShooter :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated)
+int sidePeaShooter :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated, int &storage)
 {
     int count = 0;
     int distance = getDistance(releasedPose, blocksPose[0]);
@@ -89,8 +93,14 @@ int sidePeaShooter :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &
             {
                 count = i;
                 distance = getDistance(releasedPose, blocksPose[i]);
+                
             }
         }
     }
-    isGenerated[count] = true;
+    if(storage >= 100)
+    {
+        isGenerated[count] = true;
+    }
 }
+    
+    
