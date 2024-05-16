@@ -21,8 +21,10 @@ private:
 bool isFreezed;
 bool isCollided;
 Sprite sprite;
-Texture image;
+vector<Texture> images;
 vector<int> y;
 Vector2f pose;
+int currentFrame;
+Clock frameClock;
 Clock clock;
 };
