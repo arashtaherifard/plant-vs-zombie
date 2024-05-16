@@ -28,15 +28,6 @@ void PS :: collided()
         }
     } 
 }
-// void PS :: fixPosition()
-// {
-//     FloatRect rect = sprite.getGlobalBounds();
-//     rect.top = max(0.f, rect.top);
-//     rect.top = min(rect.top, 600 - rect.height);
-//     rect.left = max(0.f, rect.left);
-//     rect.top = min(rect.top, 1400 - rect.width);
-//     sprite.setPosition(rect.left, rect.top);
-// }
 
 void PS :: render(RenderWindow &window)
 {

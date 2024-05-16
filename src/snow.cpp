@@ -17,7 +17,6 @@ void Snow  :: update()
 
 void Snow :: render(RenderWindow  &window)
 {
-    // sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
     sprite.setPosition(spritePose.x + 30, spritePose.y - 22);
     update();
     window.draw(sprite);

@@ -15,7 +15,6 @@ void generatePeaShooters(Vector2f blocks, int &count);
 void generateSnowShooters(Vector2f blocks, int &count);
 void generatePotatos(Vector2f blocks, int &count);
 void generateFlowers(Vector2f blocks, int &count);
-// void generate(Vector2f blocks, int &count);
 void trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShooters, vector<SS*> &trashSnowShooters
 , vector<potato*> &trashPotatos, vector<SunFlower*> &trashFlowers, vector<Vector2f> &trashPose, vector<Vector2f> &peaShootrerPose, vector<bool> &check, vector<Vector2f> &snowShootrerPose, vector<Vector2f> &trashSnowShooterPose);
 void deleter(vector<bool> &isGenerated, vector<Vector2f> &peaShootrerPose, vector<bool> &check, vector<Vector2f> &snowShootrerPose);

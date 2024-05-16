@@ -16,7 +16,6 @@ void addgiants();
 void addProjectiles(vector<Vector2f> pose);
 void addSnows(vector<Vector2f> pose);
 void deletedOutOfBounds(FloatRect windowBounds);
-// void setZombiePose(Vector2f pose, int count){zombies[count]->setPose(pose);};
 void deleteZombies();
 void deleteGiants();
 void isCollidedSetter(int count , bool is){zombies[count]->isCollidedSetter(is);};

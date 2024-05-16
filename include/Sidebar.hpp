@@ -22,7 +22,7 @@ public:
     
 private:
 
-    int sunStore;
+    int sunStore = 0;
     Text storage;
     Font font;
     sunStorage *sun;

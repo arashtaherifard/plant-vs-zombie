@@ -21,7 +21,9 @@ private:
 bool isFreezed;
 bool isCollided;
 Sprite sprite;
-Texture image;
+vector<Texture> images;
+int currentFrame;
+Clock frameClock;
 vector<int> y;
 Vector2f pose;
 Clock clock;

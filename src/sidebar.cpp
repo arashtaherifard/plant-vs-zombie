@@ -11,7 +11,6 @@ Sidebar::Sidebar()
     
     if(!font.loadFromFile("spriters/font/MagicalNeverland.TTF"))
     {
-        cout << "sfad";
         return;
     }
     storage.setFont(font);
@@ -77,26 +76,6 @@ int Sidebar :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> b
         return 0;
     }
     
-    /*if (sidePotatos->checkDrag(event, window, blocksPose, isGenerated, storage))
-    {
-        return sidePotatos->checkDrag(event, window, blocksPose, isGenerated, storage);
-    }
-    else if(sidePeaShooters->checkDrag(event, window, blocksPose, isGenerated, storage))
-    {
-        return sidePeaShooters->checkDrag(event, window, blocksPose, isGenerated, storage);
-    }
-    else if(sideSnowPeas->checkDrag(event, window, blocksPose, isGenerated, storage))
-    {
-        return sideSnowPeas->checkDrag(event, window, blocksPose, isGenerated, storage);
-    }
-    else if (flowers->checkDrag(event, window, blocksPose, isGenerated, storage))
-    {
-        return flowers->checkDrag(event, window, blocksPose, isGenerated, storage);
-    }
-    else
-    {
-        return 0;
-    }*/
 }
 
 

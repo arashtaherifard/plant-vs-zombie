@@ -27,6 +27,7 @@ Game :: Game(int width, int height)
     music.play();
     GameOver.setBuffer(gameOver);
     isOver = false;
+    storage = 0;
 }
 
 void Game :: peaShooterVsZ()
@@ -296,7 +297,7 @@ void Game :: render()
     sidebar->render(event, window);
     player->render(window);
     handler->gameOver(isOver, sprite.getGlobalBounds());
-    if (isOver)
+    if(isOver)
     {
         music.pause();
         GameOver.setLoop(true);
