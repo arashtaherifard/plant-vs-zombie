@@ -1,6 +1,7 @@
 #include"peaShooter.hpp"
 PS :: PS(Vector2f pose, int count)
 {
+    
     if (!image.loadFromFile("spriters/Peashooter/Peashooter.png"))
     {
         return;

@@ -14,13 +14,19 @@ public:
     void update(Event &event, RenderWindow &window);
     int changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGenerated, int &storage);
     int getDistance(Vector2f first, Vector2f second);
+    
+
 private:
+
+    bool isDim;
+    Sprite dimSprite;
+    Texture dimImage;
+    Clock dimClock;
     int type;
     int counter;
     bool isDragging;
     Vector2f releasedPose;
     Sprite sprite;
-    Sprite dimSprite;
     Sprite fakeSprite;
     Texture fake;
     Texture texture;

@@ -3,7 +3,7 @@
 Game :: Game(int width, int height)
 {
     window.create(VideoMode(width, height), "plantvszombie", Style::Close);
-    if(!background.loadFromFile("spriters/front yard/Frontyard.png"))
+    if(!background.loadFromFile("spriters/front yard/Frontyard.png")||!overTexture.loadFromFile("spriters/images/Losing_Message.png"))
     {
         return ;
     }
@@ -12,17 +12,189 @@ Game :: Game(int width, int height)
     {
         blocksPose(i);
     }
+    over.setTexture(overTexture);
+    over.setScale(2.92, 2);
     sprite.setTexture(background);
     window.setFramerateLimit(144);
     handler = new Handler;
     player = new Player;
     sidebar = new Sidebar;
-    if(!music.openFromFile("music.mp3"))
+    if(!music.openFromFile("spriters/mokhtarnameh-barkhiz.mp3") || !gameOver.loadFromFile("spriters/over.wav"))
     {
         return;
     }
-    music.setLoop(false);
+    music.setLoop(true);
     music.play();
+    GameOver.setBuffer(gameOver);
+    isOver = false;
+}
+
+void Game :: peaShooterVsZ()
+{
+    for(int i = 0; i< handler->getZombiesCount(); i++)
+    {
+        for(int j = 0; j< player->getPeaShootersCount(); j++)
+        {
+            if (player->getPeaShooterRect(j).intersects(handler->getZombieRect(i)))
+            {
+                player->peaShooterCollide(j);
+                handler->isCollidedSetter(i, true); 
+                collision[i]++;    
+            } 
+            else
+            {
+                if(collision[i] == 0)
+                    handler->isCollidedSetter(i, false);  
+            }
+        }
+    }
+}
+
+void Game :: potatoVsZ()
+{
+    for(int i = 0; i< handler->getZombiesCount(); i++)
+    {
+        for(int j = 0; j< player->getPotatoCount(); j++)
+        {
+            if (player->getPotatoRect(j).intersects(handler->getZombieRect(i)))
+            {
+                player->potatoCollide(j);
+                handler->isCollidedSetter(i, true);  
+                collision[i]++;      
+            } 
+            else
+            {
+                if(collision[i] == 0)
+                    handler->isCollidedSetter(i, false);  
+            }
+        }
+    }
+}
+
+void Game :: snowShooterVsZ()
+{
+    for(int i = 0; i< handler->getZombiesCount(); i++)
+    {
+        for(int j = 0; j < player->getSnowShootersCount(); j++)
+        {
+            if (player->getSnowShooterRect(j).intersects(handler->getZombieRect(i)))
+            {
+                player->snowShooterCollide(j);
+                handler->isCollidedSetter(i, true); 
+                collision[i]++;       
+            } 
+            else
+            {
+                if(collision[i] == 0)
+                    handler->isCollidedSetter(i, false);  
+            }
+        }
+    }
+}
+
+void Game :: sunFlowerVsZ()
+{
+    for(int i = 0; i< handler->getZombiesCount(); i++)
+    {
+        for(int j = 0; j< player->getSunFlowerCount(); j++)
+        {
+            if (player->getSunFlowerRect(j).intersects(handler->getZombieRect(i)))
+            {
+                player->sunFlowerCollide(j);
+                handler->isCollidedSetter(i, true);     
+                collision[i]++;   
+            } 
+            else
+            {
+                if(collision[i] == 0)
+                    handler->isCollidedSetter(i, false);  
+            }
+        }
+    }
+}
+
+void Game :: peaShooterVsG()
+{
+    for(int i = 0; i< handler->getGiantsCount(); i++)
+    {
+        for(int j = 0; j< player->getPeaShootersCount(); j++)
+        {
+            if (player->getPeaShooterRect(j).intersects(handler->getGiantRect(i)))
+            {
+                player->peaShooterCollide(j);
+                handler->giantCollidedSetter(i, true); 
+                collision[i]++;    
+            } 
+            else
+            {
+                if(collision[i] == 0)
+                    handler->giantCollidedSetter(i, false);  
+            }
+        }
+    }
+}
+
+void Game :: potatoVsG()
+{
+    for(int i = 0; i< handler->getGiantsCount(); i++)
+    {
+        for(int j = 0; j< player->getPotatoCount(); j++)
+        {
+            if (player->getPotatoRect(j).intersects(handler->getGiantRect(i)))
+            {
+                player->potatoCollide(j);
+                handler->giantCollidedSetter(i, true);  
+                collision[i]++;      
+            } 
+            else
+            {
+                if(collision[i] == 0)
+                    handler->giantCollidedSetter(i, false);  
+            }
+        }
+    }
+}
+
+void Game :: snowShooterVsG()
+{
+    for(int i = 0; i< handler->getGiantsCount(); i++)
+    {
+        for(int j = 0; j < player->getSnowShootersCount(); j++)
+        {
+            if (player->getSnowShooterRect(j).intersects(handler->getGiantRect(i)))
+            {
+                player->snowShooterCollide(j);
+                handler->giantCollidedSetter(i, true); 
+                collision[i]++;       
+            } 
+            else
+            {
+                if(collision[i] == 0)
+                    handler->giantCollidedSetter(i, false);  
+            }
+        }
+    }
+}
+
+void Game :: sunFlowerVsG()
+{
+    for(int i = 0; i< handler->getGiantsCount(); i++)
+    {
+        for(int j = 0; j< player->getSunFlowerCount(); j++)
+        {
+            if (player->getSunFlowerRect(j).intersects(handler->getGiantRect(i)))
+            {
+                player->sunFlowerCollide(j);
+                handler->giantCollidedSetter(i, true);     
+                collision[i]++;   
+            } 
+            else
+            {
+                if(collision[i] == 0)
+                    handler->giantCollidedSetter(i, false);  
+            }
+        }
+    }
 }
 
 void Game :: lineFiller()
@@ -60,6 +232,33 @@ void Game :: blocksPose(int count)
     }
 }
 
+void Game :: PvsG()
+{
+    
+    for (int i = 0; i < handler->getGiantsCount(); i++)
+    {
+        collision.push_back(0);
+    }
+    
+    peaShooterVsG();
+
+    snowShooterVsG();
+
+    potatoVsG();
+
+    sunFlowerVsG();
+    
+    if (player->getPeaShootersCount() == 0 && player->getSnowShootersCount() == 0 && player->getPotatoCount() == 0 && player->getSunFlowerCount() == 0)
+    {
+        for (int i = 0; i < handler->getGiantsCount(); i++)
+        {
+            handler->giantCollidedSetter(i, false);
+        }
+    }
+    collision.clear();
+    
+}
+
 void Game :: PvsZ()
 {
     
@@ -67,94 +266,22 @@ void Game :: PvsZ()
     {
         collision.push_back(0);
     }
-    for(int i = 0; i< handler->getZombiesCount(); i++)
-    {
-        for(int j = 0; j< player->getPeaShootersCount(); j++)
-        {
-            if (player->getPeaShooterRect(j).intersects(handler->getZobieRect(i)))
-            {
-                player->peaShooterCollide(j);
-                handler->isCollidedSetter(i, true); 
-                collision[i]++;    
-            } 
-            else
-            {
-                if(collision[i] == 0)
-                    handler->isCollidedSetter(i, false);  
-            }
-        }
-    }
+    
+    peaShooterVsZ();
 
-    for(int i = 0; i< handler->getZombiesCount(); i++)
-    {
-        for(int j = 0; j < player->getSnowShootersCount(); j++)
-        {
-            if (player->getSnowShooterRect(j).intersects(handler->getZobieRect(i)))
-            {
-                player->snowShooterCollide(j);
-                handler->isCollidedSetter(i, true); 
-                collision[i]++;       
-            } 
-            else
-            {
-                if(collision[i] == 0)
-                    handler->isCollidedSetter(i, false);  
-            }
-        }
-    }
+    snowShooterVsZ();
 
-    for(int i = 0; i< handler->getZombiesCount(); i++)
+    potatoVsZ();
+
+    sunFlowerVsZ();
+
+    if (player->getPeaShootersCount() == 0 && player->getSnowShootersCount() == 0 && player->getPotatoCount() == 0 && player->getSunFlowerCount() == 0)
     {
-        for(int j = 0; j< player->getPotatoCount(); j++)
+        for (int i = 0; i < handler->getZombiesCount(); i++)
         {
-            if (player->getPotatoRect(j).intersects(handler->getZobieRect(i)))
-            {
-                player->potatoCollide(j);
-                handler->isCollidedSetter(i, true);  
-                collision[i]++;      
-            } 
-            else
-            {
-                if(collision[i] == 0)
-                    handler->isCollidedSetter(i, false);  
-            }
+            handler->isCollidedSetter(i, false);
         }
     }
-    for(int i = 0; i< handler->getZombiesCount(); i++)
-    {
-        for(int j = 0; j< player->getSunFlowerCount(); j++)
-        {
-            if (player->getSunFlowerRect(j).intersects(handler->getZobieRect(i)))
-            {
-                player->sunFlowerCollide(j);
-                handler->isCollidedSetter(i, true);     
-                collision[i]++;   
-            } 
-            else
-            {
-                if(collision[i] == 0)
-                    handler->isCollidedSetter(i, false);  
-            }
-        }
-    }
-    // for (int i = 0; i < collision.size(); i++)
-    // {
-    //     if (collision[i] == 4)
-    //     {
-    //         handler->isCollidedSetter(i, false);  
-    //     }
-    //     else
-    //     {
-    //         handler->isCollidedSetter(i, true);     
-    //     }
-    // }
-    // if (player->getPeaShootersCount() == 0 || player->getSnowShootersCount() == 0||player->getPotatoCount() == 0||player->getSunFlowerCount() == 0)
-    // {
-    //     for (int i = 0; i < handler->getZombiesCount(); i++)
-    //     {
-    //         handler->isCollidedSetter(i, false);
-    //     }
-    // }
     collision.clear();
     
 }
@@ -168,6 +295,14 @@ void Game :: render()
     handler->render(window);
     sidebar->render(event, window);
     player->render(window);
+    handler->gameOver(isOver, sprite.getGlobalBounds());
+    if (isOver)
+    {
+        music.pause();
+        GameOver.setLoop(true);
+        GameOver.play();
+        window.draw(over);
+    }
     window.display();  
 } 
 
@@ -183,13 +318,18 @@ void Game :: peaShooterPoseSavor(Vector2f blockCenter)
 
 void Game :: update()
 { 
-    player->deleter(isGenerated, peaShooterPose, check);
+    
+    player->deleter(isGenerated, peaShooterPose, check, snowShooterPose);
+    storage = 0;
+    player->sun(window, storage);
+    sidebar->sunSetter(storage);
+    storage = sidebar->sunGetter();
     handler->generateRandomSuns();
     handler->update(peaShooterPose, snowShooterPose);
     handler->deletedOutOfBounds(sprite.getGlobalBounds());
-    sidebar->update(event, window, blockCenters, isGenerated);
+    
     sunHandler();
-    sidebar->setText();
+    sidebar->update(event, window, blockCenters, isGenerated);
 }
 
 void Game :: handleEvents()
@@ -198,68 +338,85 @@ void Game :: handleEvents()
     objectType = sidebar->checkDrag(event, window, blockCenters, isGenerated, storage);
 }
 
+void Game :: peaShooterGenerator()
+{
+    for (int i = 0; i < 45; i++)
+    {
+        if (isGenerated[i] && !check[i])
+        {
+            player->generatePeaShooters(blockCenters[i], i);
+            sidebar->sunSetter(-100);
+            storage = sidebar->sunGetter();
+            peaShooterPoseSavor(blockCenters[i]);
+            check[i] = true;
+            isGenerated[i] = false;
+        }   
+    } 
+}
+void Game :: potatoGenerator()
+{
+    for (int i = 0; i < 45; i++)
+    {
+        if (isGenerated[i] && !check[i])
+        {
+            sidebar->sunSetter(-50);
+            storage = sidebar->sunGetter();
+            player->generatePotatos(blockCenters[i], i);
+            check[i] = true;
+            isGenerated[i] = false;
+        }   
+    } 
+}
+void Game :: snowShooterGenerator()
+{
+    for (int i = 0; i < 45; i++)
+    {
+        if (isGenerated[i] && !check[i])
+        {
+            player->generateSnowShooters(blockCenters[i], i);
+            sidebar->sunSetter(-150);
+            storage = sidebar->sunGetter();
+            snowShooterPoseSavor(blockCenters[i]);
+            check[i] = true;
+            isGenerated[i] = false;
+        }   
+    } 
+}
+void Game :: sunFlowerGenerator()
+{
+    for (int i = 0; i < 45; i++)
+    {
+        if (isGenerated[i] &&! check[i])
+        {
+            sidebar->sunSetter(-50);
+            storage = sidebar->sunGetter();
+            player->generateFlowers(blockCenters[i], i);
+            check[i] = true;
+            isGenerated[i] = false;
+        }   
+    } 
+}
+
 void Game :: generatePlants()
 {
     if(objectType == 1)
     {
-        for (int i = 0; i < 45; i++)
-        {
-            if (isGenerated[i] &&!check[i])
-            {
-                player->generatePeaShooters(blockCenters[i], i);
-                sidebar->sunSetter(-100);
-                storage = sidebar->sunGetter();
-                peaShooterPoseSavor(blockCenters[i]);
-                check[i] = true;
-                isGenerated[i] = false;
-            }   
-        } 
+        peaShooterGenerator();
     }
 
     if(objectType == 2)
     {
-        for (int i = 0; i < 45; i++)
-        {
-            if (isGenerated[i]&&!check[i])
-            {
-                player->generateSnowShooters(blockCenters[i], i);
-                sidebar->sunSetter(-150);
-                storage = sidebar->sunGetter();
-                snowShooterPoseSavor(blockCenters[i]);
-                check[i] = true;
-                isGenerated[i] = false;
-            }   
-        } 
+        snowShooterGenerator();
     }
 
     if(objectType == 3)
     {
-        for (int i = 0; i < 45; i++)
-            {
-                if (isGenerated[i]&&!check[i])
-                {
-                    sidebar->sunSetter(-50);
-                    storage = sidebar->sunGetter();
-                    player->generatePotatos(blockCenters[i], i);
-                    check[i] = true;
-                    isGenerated[i] = false;
-                }   
-            } 
+        potatoGenerator();
     }
 
     if(objectType == 4)
     {
-        for (int i = 0; i < 45; i++)
-        {
-            if (isGenerated[i]&&!check[i])
-            {
-                sidebar->sunSetter(-50);
-                storage = sidebar->sunGetter();
-                player->generateFlowers(blockCenters[i], i);
-                check[i] = true;
-                isGenerated[i] = false;
-            }   
-        } 
+        sunFlowerGenerator();
     }
 }
 
@@ -283,7 +440,7 @@ void Game :: run()
             window.close();   
         }    
         PvsZ();
-        // player->deleter(isGenerated, peaShooterPose, check);
+        PvsG();
         update();
         render();
         

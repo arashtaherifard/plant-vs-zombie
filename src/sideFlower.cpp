@@ -2,7 +2,8 @@
 #include "cmath"
 sideFlower::sideFlower(float x, float y) 
 {
-    if (!sideFlowerTexture.loadFromFile("spriters/images/icon_sunflower.png")||!fake.loadFromFile("spriters/sunflower/Sunflower.png")) {
+    if (!sideFlowerTexture.loadFromFile("spriters/images/icon_sunflower.png")||!fake.loadFromFile("spriters/sunflower/Sunflower.png")
+    ||!dimImage.loadFromFile("spriters/images/icon_sunflower_dim.png")) {
         return;
     }
     sprite.setTexture(sideFlowerTexture);
@@ -14,13 +15,30 @@ sideFlower::sideFlower(float x, float y)
     fakeSprite.setOrigin(fakeSprite.getPosition().x+fakeSprite.getTextureRect().width/2 , fakeSprite.getPosition().x+fakeSprite.getTextureRect().height/2 );
     fakeSprite.setScale(0.04, 0.04);
     type = 4;
+    dimSprite.setTexture(dimImage);
+    dimSprite.setScale(0.35,0.35);
+    dimSprite.setPosition(x,y);
+    isDim = false;
 }
 
 void sideFlower :: render(Event &event, RenderWindow &window) 
 {
     
-    window.draw(sprite);
-    if(isDragging)
+    if(isDim == false)
+    {
+        window.draw(sprite);
+    }
+    else if(isDim == true)
+    {
+        Time time = dimClock.getElapsedTime();
+        if (time.asMilliseconds() >= 20000)
+        {
+            isDim = false;
+            dimClock.restart();
+        }
+        window.draw(dimSprite);
+    }
+    if(isDragging && isDim == false)
     {
         window.draw(fakeSprite);
     }
@@ -29,6 +47,14 @@ void sideFlower :: render(Event &event, RenderWindow &window)
 
 int sideFlower :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated, int &storage)
 {
+    if (storage<50)
+    {
+        isDim = true;
+    }
+    if (storage>=50)
+    {
+        isDim = false;
+    }
     Vector2f mousePose = Vector2f(Mouse::getPosition(window));
     if (event.type == Event :: MouseButtonPressed)
     { 
@@ -100,5 +126,6 @@ int sideFlower :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isGe
     if(storage >= 50)
     {
         isGenerated[count] = true;
+        isDim = true;
     }
 }

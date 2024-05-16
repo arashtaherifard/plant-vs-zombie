@@ -13,11 +13,16 @@ void collided();
 FloatRect getRect(){return sprite.getGlobalBounds();};
 int life;
 int block;
-
+void sunGenerator(RenderWindow  &window, int &storage);
 private : 
 
 Clock clock;
 Sprite sprite;
 Texture image;
 
+bool isSun;
+
+Sprite sunSprite;
+Texture sunImage;
+Clock sunClock;
 };

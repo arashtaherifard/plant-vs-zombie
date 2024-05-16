@@ -16,11 +16,14 @@ public:
     int getDistance(Vector2f first, Vector2f second);
     
 private:
+    bool isDim;
+    Sprite dimSprite;
+    Texture dimImage;
+    Clock dimClock;
     int type;
     bool isDragging;
     Vector2f releasedPose;
     Sprite sprite;
-    Sprite dimSprite;
     Sprite fakeSprite;
     Texture fake;
     Texture sideFlowerTexture;

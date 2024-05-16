@@ -24,6 +24,7 @@ private:
 
     int sunStore;
     Text storage;
+    Font font;
     sunStorage *sun;
     sidePeaShooter *sidePeaShooters;
     sideSnowPea *sideSnowPeas;
