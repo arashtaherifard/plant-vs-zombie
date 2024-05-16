@@ -297,13 +297,13 @@ void Game :: render()
     sidebar->render(event, window);
     player->render(window);
     handler->gameOver(isOver, sprite.getGlobalBounds());
-    // if(isOver)
-    // {
-    //     music.pause();
-    //     GameOver.setLoop(true);
-    //     GameOver.play();
-    //     window.draw(over);
-    // }
+    if(isOver)
+    {
+        music.pause();
+        GameOver.setLoop(true);
+        GameOver.play();
+        window.draw(over);
+    }
     window.display();  
 } 
 
