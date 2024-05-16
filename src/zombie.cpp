@@ -30,19 +30,32 @@ void Zombie :: update()
     Time time = clock.getElapsedTime();
     if(!isCollided)
     {
-        pose.x -= 0.16;
-
-        if (frameClock.getElapsedTime().asSeconds()>0.1f)
+        if(!isFreezed)
         {
-            currentFrame = (currentFrame + 1) % images.size();
-            sprite.setTexture(images[currentFrame]);
-            frameClock.restart();
+            if (frameClock.getElapsedTime().asSeconds()>0.1f)
+            {
+                currentFrame = (currentFrame + 1) % images.size();
+                sprite.setTexture(images[currentFrame]);
+                frameClock.restart();
+            }
+            pose.x -= 0.16;
         }
-    }
-    else if(time.asMilliseconds() >= 5000)
-    {
-        pose.x -= 0.05;
-        clock.restart();
+        else
+        {
+            Time time = clock.getElapsedTime();
+            if (frameClock.getElapsedTime().asSeconds()>0.1f)
+            {
+                currentFrame = (currentFrame + 1) % images.size();
+                sprite.setTexture(images[currentFrame]);
+                frameClock.restart();
+            }
+            pose.x -= 0.05;
+            if (time.asMilliseconds() >= 6000)
+            {
+                isFreezed = false;
+                clock.restart();
+            }
+        }
     }
 }
 
@@ -52,3 +65,10 @@ void Zombie :: render(RenderWindow  &window)
     update();
     window.draw(sprite);
 }
+
+// if (frameClock.getElapsedTime().asSeconds()>0.1f)
+//         {
+//             currentFrame = (currentFrame + 1) % images.size();
+//             sprite.setTexture(images[currentFrame]);
+//             frameClock.restart();
+//         }
