@@ -1,0 +1,28 @@
+#pragma once
+#include "projectile.hpp" 
+using namespace std;
+using namespace sf;
+class Giant
+{
+public :
+
+Giant();
+void render(RenderWindow  &window);
+void update();
+void setPose(Vector2f pose){sprite.setPosition(pose);};
+FloatRect getRect(){return sprite.getGlobalBounds();};
+void freezeSetter(){isFreezed = true;};
+void isCollidedSetter(bool is){isCollided = is;};
+int life;
+
+
+private:
+
+bool isFreezed;
+bool isCollided;
+Sprite sprite;
+Texture image;
+vector<int> y;
+Vector2f pose;
+Clock clock;
+};
