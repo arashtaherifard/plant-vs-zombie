@@ -308,7 +308,7 @@ void Handler :: sunCollector(RenderWindow &window)
     {
         if (randomSuns[i]->getRect().contains(mousepose))
         {
-            sun = sun + 50;
+            sun = sun + 25;
             trashSuns.push_back(randomSuns[i]);
             deleteCollectedSuns(trashSuns);
         }
