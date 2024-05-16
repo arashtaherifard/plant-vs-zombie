@@ -319,8 +319,6 @@ void Game :: peaShooterPoseSavor(Vector2f blockCenter)
 
 void Game :: update()
 { 
-    
-    
     storage = 0;
     player->sun(window, storage);
     sidebar->sunSetter(storage);
