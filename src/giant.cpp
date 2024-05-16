@@ -18,7 +18,7 @@ Giant :: Giant()
     y.push_back(110);y.push_back(220);y.push_back(310);y.push_back(525);y.push_back(420);
     pose.x = 1300 ;
     pose.y = y[rand()%5];
-    life = 15;
+    life = giantLife;
     isFreezed = false;
     isCollided = false;
 }
@@ -36,7 +36,7 @@ void Giant :: update()
                 sprite.setTexture(images[currentFrame]);
                 frameClock.restart();
             }
-            pose.x -= 0.16;
+            pose.x -= giantSpeed;
         }
         else
         {
@@ -47,7 +47,7 @@ void Giant :: update()
                 sprite.setTexture(images[currentFrame]);
                 frameClock.restart();
             }
-            pose.x -= 0.05;
+            pose.x -= giantFrozenSpeed;
             if (time.asMilliseconds() >= 6000)
             {
                 isFreezed = false;

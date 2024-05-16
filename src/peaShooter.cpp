@@ -10,7 +10,7 @@ PS :: PS(Vector2f pose, int count)
     sprite.setScale(0.04, 0.04);
     sprite.setOrigin(sprite.getPosition().x+sprite.getTextureRect().width/2 , sprite.getPosition().x+sprite.getTextureRect().height/2 );
     sprite.setPosition(pose);
-    life = 5;
+    life = peaShooterLife;
     isCollided = false;
     block = count;
     

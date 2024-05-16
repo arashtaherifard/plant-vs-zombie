@@ -37,7 +37,7 @@ void Zombie :: update()
                 sprite.setTexture(images[currentFrame]);
                 frameClock.restart();
             }
-            pose.x -= 0.16;
+            pose.x -= zombieSpeed;
         }
         else
         {
@@ -48,8 +48,8 @@ void Zombie :: update()
                 sprite.setTexture(images[currentFrame]);
                 frameClock.restart();
             }
-            pose.x -= 0.05;
-            if (time.asMilliseconds() >= 6000)
+            pose.x -= zombieFrozenSpeed;
+            if (time.asMilliseconds() >= 7000)
             {
                 isFreezed = false;
                 clock.restart();

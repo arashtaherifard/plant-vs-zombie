@@ -19,7 +19,7 @@ SunFlower :: SunFlower(Vector2f pose, int blocks)
     block = blocks;
     isCollided = false;
     isSun = false;
-    life = 3;
+    life = sunFlowerLife;
 }
 
 void SunFlower :: collided()
@@ -48,7 +48,7 @@ void SunFlower :: sunGenerator(RenderWindow &window, int &storage)
     if (isSun && sunSprite.getGlobalBounds().contains(mousePose))
     {
         isSun = false;
-        storage += 50;
+        storage += sunFlowerQuantity;
     }
 }
 

@@ -320,7 +320,7 @@ void Game :: peaShooterPoseSavor(Vector2f blockCenter)
 void Game :: update()
 { 
     
-    player->deleter(isGenerated, peaShooterPose, check, snowShooterPose);
+    
     storage = 0;
     player->sun(window, storage);
     sidebar->sunSetter(storage);
@@ -328,9 +328,9 @@ void Game :: update()
     handler->generateRandomSuns();
     handler->update(peaShooterPose, snowShooterPose);
     handler->deletedOutOfBounds(sprite.getGlobalBounds());
-    
     sunHandler();
     sidebar->update(event, window, blockCenters, isGenerated);
+    player->deleter(isGenerated, peaShooterPose, check, snowShooterPose);
 }
 
 void Game :: handleEvents()

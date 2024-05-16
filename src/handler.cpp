@@ -72,14 +72,14 @@ void Handler :: giantCollision()
                 if(giants[j]->life > 0)
                     giants[j]->life--;
                 trashProjectiles.push_back(projectiles[i]);
-                
+                for (int i = 0; i < trashProjectiles.size(); i++)
+                {
+                    projectiles.erase(remove(projectiles.begin(), projectiles.end(), trashProjectiles[i]), projectiles.end());
+                }
+                trashProjectiles.clear();
             }
         }
-        for (int i = 0; i < trashProjectiles.size(); i++)
-        {
-            projectiles.erase(remove(projectiles.begin(), projectiles.end(), trashProjectiles[i]), projectiles.end());
-            delete trashProjectiles[i];
-        }
+        
     }
 
     for (int i = 0; i < snows.size(); i++)
@@ -94,13 +94,12 @@ void Handler :: giantCollision()
                     giants[j]->life--;
                 }
                 trashPSnows.push_back(snows[i]);
-                
+                for (int i = 0; i < trashPSnows.size(); i++)
+                {
+                    snows.erase(remove(snows.begin(), snows.end(), trashPSnows[i]), snows.end());
+                }
+                trashPSnows.clear();
             }
-        }
-        for (int i = 0; i < trashPSnows.size(); i++)
-        {
-            snows.erase(remove(snows.begin(), snows.end(), trashPSnows[i]), snows.end());
-            delete trashPSnows[i];
         }
     }
 }
@@ -118,14 +117,14 @@ void Handler :: zombieCollision()
                 if(zombies[j]->life > 0)
                     zombies[j]->life--;
                 trashProjectiles.push_back(projectiles[i]);
-                
+                for (int i = 0; i < trashProjectiles.size(); i++)
+                {
+                    projectiles.erase(remove(projectiles.begin(), projectiles.end(), trashProjectiles[i]), projectiles.end());
+                }
+                trashProjectiles.clear();
             }
         }
-        for (int i = 0; i < trashProjectiles.size(); i++)
-        {
-            projectiles.erase(remove(projectiles.begin(), projectiles.end(), trashProjectiles[i]), projectiles.end());
-            delete trashProjectiles[i];
-        }
+        
     }
     for (int i = 0; i < snows.size(); i++)
     {
@@ -139,14 +138,14 @@ void Handler :: zombieCollision()
                     zombies[j]->life--;
                 }
                 trashPSnows.push_back(snows[i]);
-                
+                for (int i = 0; i < trashPSnows.size(); i++)
+                {
+                    snows.erase(remove(snows.begin(), snows.end(), trashPSnows[i]), snows.end());
+                }
+                trashPSnows.clear();
             }
         }
-        for (int i = 0; i < trashPSnows.size(); i++)
-        {
-            snows.erase(remove(snows.begin(), snows.end(), trashPSnows[i]), snows.end());
-            delete trashPSnows[i];
-        }
+        
     }
 }
 
@@ -301,7 +300,6 @@ void Handler :: deleteCollectedSuns(vector<RandomSun*> &trashSuns)
         randomSuns.erase(remove(randomSuns.begin(), randomSuns.end(), trashSuns[i]), randomSuns.end());
         delete trashSuns[i];
     }
-    
 }
 
 void Handler :: sunCollector(RenderWindow &window)
@@ -313,7 +311,7 @@ void Handler :: sunCollector(RenderWindow &window)
     {
         if (randomSuns[i]->getRect().contains(mousepose))
         {
-            sun = sun + 25;
+            sun = sun + randomSunQuantity;
             trashSuns.push_back(randomSuns[i]);
             deleteCollectedSuns(trashSuns);
         }
