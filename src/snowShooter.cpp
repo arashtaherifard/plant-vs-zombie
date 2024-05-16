@@ -12,7 +12,7 @@ SS :: SS(Vector2f pose, int blocks)
     sprite.setPosition(pose);
     block = blocks;
     isCollided = false;
-    life = 5;
+    life = 6;
 }
 
 void SS :: collided()

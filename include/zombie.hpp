@@ -11,11 +11,14 @@ void render(RenderWindow  &window);
 void update();
 void setPose(Vector2f pose){sprite.setPosition(pose);};
 FloatRect getRect(){return sprite.getGlobalBounds();};
+void freezeSetter(){isFreezed = true;};
 void isCollidedSetter(bool is){isCollided = is;};
 int life;
 
+
 private:
 
+bool isFreezed;
 bool isCollided;
 Sprite sprite;
 vector<Texture> images;
@@ -23,5 +26,5 @@ vector<int> y;
 Vector2f pose;
 int currentFrame;
 Clock frameClock;
-
+Clock clock;
 };

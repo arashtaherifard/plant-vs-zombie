@@ -20,14 +20,17 @@ Zombie :: Zombie()
     pose.x = 1300 ;
     pose.y = y[rand()%5];
     life = 5;
+    isFreezed = false;
     isCollided = false;
     currentFrame = 0;
 }
 
 void Zombie :: update()
-{
+{ 
+    Time time = clock.getElapsedTime();
     if(!isCollided)
-        pose.x -= 0.2;
+    {
+        pose.x -= 0.16;
 
         if (frameClock.getElapsedTime().asSeconds()>0.1f)
         {
@@ -35,7 +38,12 @@ void Zombie :: update()
             sprite.setTexture(images[currentFrame]);
             frameClock.restart();
         }
-    
+    }
+    else if(time.asMilliseconds() >= 5000)
+    {
+        pose.x -= 0.05;
+        clock.restart();
+    }
 }
 
 void Zombie :: render(RenderWindow  &window)

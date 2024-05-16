@@ -42,8 +42,17 @@ void Player :: generateFlowers(Vector2f blocks, int &count)
     flowers.push_back(new SunFlower(blocks, count));
 }
 
+void Player :: sun(RenderWindow &window, int &storage)
+{
+    for (int i = 0; i < flowers.size(); i++)
+    {
+        flowers[i]->sunGenerator(window, storage);
+    }
+    
+}
+
 void Player :: trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShooters, vector<SS*> &trashSnowShooters
-, vector<potato*> &trashPotatos, vector<SunFlower*> &trashFlowers, vector<Vector2f> &trashPose, vector<Vector2f> &peaShootrerPose, vector<bool> &check)
+, vector<potato*> &trashPotatos, vector<SunFlower*> &trashFlowers, vector<Vector2f> &trashPose, vector<Vector2f> &peaShootrerPose, vector<bool> &check, vector<Vector2f> &snowShooterPose, vector<Vector2f> &trashSnowShooterPose)
 {
     for (int i = 0; i < peaShooters.size(); i++)
     {
@@ -63,6 +72,7 @@ void Player :: trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShoot
             trashSnowShooters.push_back(snowShooters[i]);
             check[snowShooters[i]->block] = false;
             isGenerated[snowShooters[i]->block] = false;
+            trashSnowShooterPose.push_back(snowShooterPose[i]);
         }
     }
 
@@ -129,20 +139,27 @@ FloatRect Player :: getSunFlowerRect(int count)
     return flowers[count]->getRect();
 }
 
-void Player :: deleter(vector<bool> &isGenerated, vector<Vector2f> &peaShootrerPose, vector<bool> &check)
+void Player :: deleter(vector<bool> &isGenerated, vector<Vector2f> &peaShootrerPose, vector<bool> &check, vector<Vector2f> &snowShooterPose)
 {
     vector<PS*> trashPeaShooters; 
     vector<SS*> trashSnowShooters; 
     vector<potato*> trashPotatos;
     vector<SunFlower*> trashFlowers;
     vector<Vector2f> trashPose;
-    trashFiller(isGenerated, trashPeaShooters, trashSnowShooters, trashPotatos, trashFlowers, trashPose, peaShootrerPose, check);
+    vector<Vector2f> trashSnowShooterPose;
+    trashFiller(isGenerated, trashPeaShooters, trashSnowShooters, trashPotatos, trashFlowers, trashPose, peaShootrerPose, check, snowShooterPose, trashSnowShooterPose);
     for (int i = 0; i < trashPose.size(); i++)
     {
         peaShootrerPose.erase(remove(peaShootrerPose.begin(), peaShootrerPose.end(), trashPose[i]), peaShootrerPose.end());
         trashPose.clear();
     }
     
+    for (int i = 0; i < trashSnowShooterPose.size(); i++)
+    {
+        snowShooterPose.erase(remove(snowShooterPose.begin(), snowShooterPose.end(), trashSnowShooterPose[i]), snowShooterPose.end());
+        trashSnowShooterPose.clear();
+    }
+
     for (int i = 0; i < trashPeaShooters.size(); i++)
     {
         peaShooters.erase(remove(peaShooters.begin(), peaShooters.end(), trashPeaShooters[i]), peaShooters.end());

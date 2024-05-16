@@ -16,8 +16,9 @@ FloatRect getRect(){return sprite.getGlobalBounds();};
 
 int life;
 int block;
-
+bool isDim;
 private:
+
 Sprite sprite;
 Clock clock;
 Vector2f pose;

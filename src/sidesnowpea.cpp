@@ -3,24 +3,41 @@
 using namespace std;
 sideSnowPea :: sideSnowPea(float x, float y) 
 {
-    if (!sideSnowTexture.loadFromFile("spriters/images/sideSnowPea.png")||!fake.loadFromFile("spriters/snow/HDplus_snowpea.png")) {
+    if (!sideSnowTexture.loadFromFile("spriters/images/sideSnowPea.png")||!fake.loadFromFile("spriters/snow/HDplus_snowpea.png")
+    ||!dimImage.loadFromFile("spriters/images/1715724189153.jpg")) {
         return;
     }
     sprite.setTexture(sideSnowTexture);
     sprite.setScale(0.28,0.28);
     sprite.setPosition(x, y);
-
     isDragging = false;
     fakeSprite.setTexture(fake);
     fakeSprite.setOrigin(fakeSprite.getPosition().x+fakeSprite.getTextureRect().width/2 , fakeSprite.getPosition().x+fakeSprite.getTextureRect().height/2 );
     fakeSprite.setScale(0.06, 0.06);
     type = 2;
+    dimSprite.setTexture(dimImage);
+    dimSprite.setScale(0.053,0.053);
+    dimSprite.setPosition(x,y);
+    isDim = false;
 }
 
 void sideSnowPea :: render(Event &event, RenderWindow &window) 
 {
-    window.draw(sprite);
-    if(isDragging)
+    if(isDim == false)
+    {
+        window.draw(sprite);
+    }
+    else if(isDim == true)
+    {
+        Time time = dimClock.getElapsedTime();
+        if (time.asMilliseconds() >= 20000)
+        {
+            isDim = false;
+            dimClock.restart();
+        }
+        window.draw(dimSprite);
+    }
+    if(isDragging && isDim == false)
     {
         window.draw(fakeSprite);
     }
@@ -29,6 +46,14 @@ void sideSnowPea :: render(Event &event, RenderWindow &window)
 
 int sideSnowPea :: checkDrag(Event &event, RenderWindow &window, vector <Vector2f> blocksPose, vector<bool> &isGenerated, int &storage)
 {
+    if (storage<150)
+    {
+        isDim = true;
+    }
+    if (storage>=150)
+    {
+        isDim = false;
+    }
     Vector2f mousePose = Vector2f(Mouse::getPosition(window));
     if (event.type == Event :: MouseButtonPressed)
     { 
@@ -99,6 +124,7 @@ int sideSnowPea :: changeStatus(vector <Vector2f> &blocksPose, vector<bool> &isG
     if(storage >= 150)
     {
         isGenerated[count] = true;
+        isDim = true;
     }
 }
 

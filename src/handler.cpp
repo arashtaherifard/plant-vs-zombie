@@ -2,6 +2,7 @@
 using namespace sf;
 void Handler :: render(RenderWindow  &window)
 {
+    deleteGiants();
     deleteZombies();
     for (int i = 0; i < projectiles.size(); i++)
     {
@@ -22,6 +23,30 @@ void Handler :: render(RenderWindow  &window)
     {
         randomSuns[i]->render(window);
     }
+    for (int i = 0; i < giants.size(); i++)
+    {
+        giants[i]->render(window);
+    }
+    
+}
+
+void Handler :: gameOver(bool &isOver, FloatRect windowBounds)
+{
+    for (int i = 0; i < zombies.size(); i++)
+    {
+        if (!windowBounds.intersects(zombies[i]->getRect()))
+        {
+            isOver = true;
+        }
+    }
+    for (int i = 0; i < giants.size(); i++)
+    {
+        if (!windowBounds.intersects(giants[i]->getRect()))
+        {
+            isOver = true;
+        }
+    }
+    
 }
 
 void Handler :: generateRandomSuns()
@@ -34,7 +59,50 @@ void Handler :: generateRandomSuns()
     }
 }
 
-void Handler :: collision()
+void Handler :: giantCollision()
+{
+    vector <Projectile *> trashProjectiles;
+    vector <Snow *> trashPSnows;
+    for (int i = 0; i < projectiles.size(); i++)
+    {
+        for (int j = 0; j < giants.size(); j++)
+        {
+            if (projectiles[i]->getRect().intersects(giants[j]->getRect()))
+            {
+                if(giants[j]->life > 0)
+                    giants[j]->life--;
+                trashProjectiles.push_back(projectiles[i]);
+                for (int i = 0; i < trashProjectiles.size(); i++)
+                {
+                    projectiles.erase(remove(projectiles.begin(), projectiles.end(), trashProjectiles[i]), projectiles.end());
+                    delete trashProjectiles[i];
+                }
+            }
+        }
+    }
+    for (int i = 0; i < snows.size(); i++)
+    {
+        for (int j = 0; j < giants.size(); j++)
+        {
+            if (snows[i]->getRect().intersects(giants[j]->getRect()))
+            {
+                if(giants[j]->life > 0)
+                {
+                    giants[j]->freezeSetter();
+                    giants[j]->life--;
+                }
+                trashPSnows.push_back(snows[i]);
+                for (int i = 0; i < trashPSnows.size(); i++)
+                {
+                    snows.erase(remove(snows.begin(), snows.end(), trashPSnows[i]), snows.end());
+                    delete trashPSnows[i];
+                }
+            }
+        }
+    }
+}
+
+void Handler :: zombieCollision()
 {
     vector <Projectile *> trashProjectiles;
     vector <Snow *> trashPSnows;
@@ -47,6 +115,11 @@ void Handler :: collision()
                 if(zombies[j]->life > 0)
                     zombies[j]->life--;
                 trashProjectiles.push_back(projectiles[i]);
+                for (int i = 0; i < trashProjectiles.size(); i++)
+                {
+                    projectiles.erase(remove(projectiles.begin(), projectiles.end(), trashProjectiles[i]), projectiles.end());
+                    delete trashProjectiles[i];
+                }
             }
         }
     }
@@ -57,26 +130,29 @@ void Handler :: collision()
             if (snows[i]->getRect().intersects(zombies[j]->getRect()))
             {
                 if(zombies[j]->life > 0)
+                {
+                    zombies[j]->freezeSetter();
                     zombies[j]->life--;
+                }
                 trashPSnows.push_back(snows[i]);
+                for (int i = 0; i < trashPSnows.size(); i++)
+                {
+                    snows.erase(remove(snows.begin(), snows.end(), trashPSnows[i]), snows.end());
+                    delete trashPSnows[i];
+                }
             }
         }
     }
-    for (int i = 0; i < trashProjectiles.size(); i++)
-    {
-        projectiles.erase(remove(projectiles.begin(), projectiles.end(), trashProjectiles[i]), projectiles.end());
-        delete trashProjectiles[i];
-    }
-    for (int i = 0; i < trashPSnows.size(); i++)
-    {
-        snows.erase(remove(snows.begin(), snows.end(), trashPSnows[i]), snows.end());
-        delete trashPSnows[i];
-    }
 }
 
-FloatRect Handler :: getZobieRect(int count)
+FloatRect Handler :: getZombieRect(int count)
 {
     return zombies[count]->getRect();
+}
+
+FloatRect Handler :: getGiantRect(int count)
+{
+    return giants[count]->getRect();
 }
 
 void Handler ::  deleteZombies()
@@ -96,6 +172,23 @@ void Handler ::  deleteZombies()
     }
 }
 
+void Handler ::  deleteGiants()
+{
+    vector <Giant *> trashGiant;
+    for (int i = 0; i < giants.size(); i++)
+    {
+        if (giants[i]->life == 0)
+        {
+            trashGiant.push_back(giants[i]);
+        }
+    }
+    for (int i = 0; i < trashGiant.size(); i++)
+    {
+        giants.erase(remove(giants.begin(), giants.end(), trashGiant[i]), giants.end());
+        delete trashGiant[i];
+    }
+}
+
 void Handler :: addProjectiles(vector<Vector2f> pose)
 {
     for (int i = 0; i < pose.size(); i++)
@@ -103,6 +196,8 @@ void Handler :: addProjectiles(vector<Vector2f> pose)
         projectiles.push_back(new Projectile(pose[i]));
     }
 }
+
+
 
 void Handler:: addSnows(vector<Vector2f> pose)
 {
@@ -140,19 +235,7 @@ void Handler :: deletedOutOfBounds(FloatRect windowBounds)
         snows.erase(remove(snows.begin(), snows.end(), trashS[i]), snows.end());
         delete trashS[i];
     }
-    vector<Zombie*> trashZ;
-    for (int i = 0; i < zombies.size(); i++)
-    {
-        if (!windowBounds.intersects(zombies[i]->getRect()))
-        {
-            trashZ.push_back(zombies[i]);
-        }
-    }
-    for (int i = 0; i < trashZ.size(); i++)
-    {
-        zombies.erase(remove(zombies.begin(), zombies.end(), trashZ[i]), zombies.end());
-        delete trashZ[i];
-    }
+    
     vector<RandomSun*> trashSuns;
     for (int i = 0; i < randomSuns.size(); i++)
     {
@@ -173,10 +256,15 @@ void Handler :: addZombies()
     zombies.push_back(new Zombie());
 }
 
+void Handler :: addgiants()
+{
+    giants.push_back(new Giant());
+}
+
 void Handler :: snowGenerator(vector<Vector2f> pose)
 {
     Time Stime = Sclock.getElapsedTime();
-    if(Stime.asMilliseconds() >= 600)
+    if(Stime.asMilliseconds() >= 2000)
     {
         Sclock.restart();
         addSnows(pose);
@@ -185,13 +273,12 @@ void Handler :: snowGenerator(vector<Vector2f> pose)
     {
         snows[i]->update();
     }
-    
 }
 
 void Handler :: peaGenerator(vector<Vector2f> pose)
 {
     Time Ptime = Pclock.getElapsedTime();
-    if(Ptime.asMilliseconds() >= 600)
+    if(Ptime.asMilliseconds() >= 800)
     {
         Pclock.restart();
         addProjectiles(pose);
@@ -221,7 +308,7 @@ void Handler :: sunCollector(RenderWindow &window)
     {
         if (randomSuns[i]->getRect().contains(mousepose))
         {
-            sun = sun + 25;
+            sun = sun + 50;
             trashSuns.push_back(randomSuns[i]);
             deleteCollectedSuns(trashSuns);
         }
@@ -232,11 +319,19 @@ void Handler :: update( vector<Vector2f> peaShooterPose, vector<Vector2f> snowSh
 {
     
     Time Ztime = Zclock.getElapsedTime();
-    if(Ztime.asMilliseconds() >= 4000)
+    if(Ztime.asMilliseconds() >= 6000)
     {
         Zclock.restart();
         addZombies();
     }
+
+    Time Gtime = Gclock.getElapsedTime();
+    if(Gtime.asMilliseconds() >= 10000)
+    {
+        Gclock.restart();
+        addgiants();
+    }
+
     for (int i = 0; i < zombies.size(); i++)
     {
         zombies[i]->update();
@@ -247,6 +342,7 @@ void Handler :: update( vector<Vector2f> peaShooterPose, vector<Vector2f> snowSh
     }
     peaGenerator(peaShooterPose);
     snowGenerator(snowShooterPose);
-    collision();
+    zombieCollision();
+    giantCollision();
     
 }
