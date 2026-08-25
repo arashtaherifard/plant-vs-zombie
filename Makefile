@@ -1,23 +1,38 @@
-CXX =  g++ -I/opt/homebrew/Cellar/sfml/2.6.1/include -o A -L/opt/homebrew/Cellar/sfml/2.6.1/lib 
-CXXFLAGS = -std=c++17 -Wall -Wextra -I./include #-fsanitize=address -fsanitize=undefined
-LFLAGS = -L./files -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+CXX ?= g++
+
+CXXFLAGS ?= -std=c++17 -Wall -Wextra
+CPPFLAGS += -I./include
+
+SFML_PREFIX := $(shell brew --prefix sfml 2>/dev/null)
+
+ifneq ($(SFML_PREFIX),)
+CPPFLAGS += -I$(SFML_PREFIX)/include
+LDFLAGS += -L$(SFML_PREFIX)/lib
+endif
+
+LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
 SRCDIR = src
 OBJDIR = obj
-BINDIR = .
-EXECUTABLE = $(BINDIR)/pvz.out
-MEDIA_PATH = ./files/
+TARGET = pvz.out
 
 SOURCES := $(wildcard $(SRCDIR)/*.cpp)
-OBJECTS := $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SOURCES))
+OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
+HEADERS := $(wildcard include/*.hpp)
 
-all: $(EXECUTABLE)
+.PHONY: all clean run
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
+all: $(TARGET)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(wildcard $(SRCDIR)/*.hpp)
-	mkdir -p $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(MEDIA_PATH)
+$(TARGET): $(OBJECTS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS)
+	@mkdir -p $(OBJDIR)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+run: $(TARGET)
+	./$(TARGET)
 
 clean:
-	rm -rf $(OBJDIR)/*.o $(EXECUTABLE)
+	rm -rf $(OBJDIR) $(TARGET)

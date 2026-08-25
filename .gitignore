@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Build products
+obj/
+*.o
+*.obj
+*.out
+*.exe
+*.dSYM/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Local scratch/reference files
+sfml.txt
+music.mp3
