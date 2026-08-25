@@ -26,6 +26,8 @@ Game :: Game(int width, int height)
     music.setLoop(true);
     music.play();
     GameOver.setBuffer(gameOver);
+    GameOver.setLoop(true);
+    
     isOver = false;
     storage = 0;
 }
@@ -300,8 +302,6 @@ void Game :: render()
     if(isOver)
     {
         music.pause();
-        GameOver.setLoop(true);
-        GameOver.play();
         window.draw(over);
     }
     window.display();  
@@ -434,12 +434,19 @@ void Game :: run()
         while (window.pollEvent(event))
         { 
             handleEvents();
+            
             generatePlants(); 
+            
             if (event.type == Event::Closed)
             window.close();   
         }    
         PvsZ();
         PvsG();
+        if(isOver)
+            {
+                GameOver.setLoop(true);
+                GameOver.play();
+            }
         update();
         render();
         

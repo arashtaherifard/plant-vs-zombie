@@ -37,7 +37,7 @@ void Zombie :: update()
                 sprite.setTexture(images[currentFrame]);
                 frameClock.restart();
             }
-            pose.x -= zombieSpeed;
+            pose.x -= zombieSpeed ;
         }
         else
         {

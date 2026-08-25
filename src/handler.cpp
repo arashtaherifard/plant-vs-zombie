@@ -46,7 +46,6 @@ void Handler :: gameOver(bool &isOver, FloatRect windowBounds)
             isOver = true;
         }
     }
-    
 }
 
 void Handler :: generateRandomSuns()
@@ -201,8 +200,6 @@ void Handler :: addProjectiles(vector<Vector2f> pose)
     }
 }
 
-
-
 void Handler:: addSnows(vector<Vector2f> pose)
 {
     for (int i = 0; i < pose.size(); i++)
@@ -320,16 +317,15 @@ void Handler :: sunCollector(RenderWindow &window)
 
 void Handler :: update( vector<Vector2f> peaShooterPose, vector<Vector2f> snowShooterPose)
 {
-    
     Time Ztime = Zclock.getElapsedTime();
-    if(Ztime.asMilliseconds() >= 7000)
+    if(Ztime.asMilliseconds() >= 6500)
     {
         Zclock.restart();
         addZombies();
     }
 
     Time Gtime = Gclock.getElapsedTime();
-    if(Gtime.asMilliseconds() >= 12000)
+    if(Gtime.asMilliseconds() >= 11000)
     {
         Gclock.restart();
         addgiants();

@@ -19,7 +19,6 @@ void Player :: render(RenderWindow &Window)
     {
         flowers[i]->render(Window);
     }
-    
 } 
 
 void Player :: generatePeaShooters(Vector2f blocks, int &count)
@@ -48,7 +47,6 @@ void Player :: sun(RenderWindow &window, int &storage)
     {
         flowers[i]->sunGenerator(window, storage);
     }
-    
 }
 
 void Player :: trashFiller(vector<bool> &isGenerated, vector<PS*> &trashPeaShooters, vector<SS*> &trashSnowShooters
